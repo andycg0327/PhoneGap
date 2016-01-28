@@ -35,7 +35,7 @@ var app = {
       "windows": {}
     });
     push.on('registration', function(data) {
-      $("input[RegistrationID]").val(data.registrationId);
+      $("input[name=RegistrationID]").val(data.registrationId);
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
@@ -52,7 +52,7 @@ $(document).ready(function(){
 // Normal login
 function LoginSubmit(Type) {
   if($("#Form_" + Type).valid()) {
-    $.post('http://myth-hair.frog.tw/login_phonegap.php', $("#Form_" + Type).serialize(), function(data, status){
+    $.post('http://myth-hair.frog.tw/login.php', $("#Form_" + Type).serialize(), function(data, status){
       if(status == "success") {
         $("#Alert_" + Type).html(data);
         return true;
@@ -63,16 +63,20 @@ function LoginSubmit(Type) {
 }
 
 function FBLoginSubmit(Type) {
-  alert("1");
   var response;
   facebookConnectPlugin.login(["public_profile", "email"],
     fbLoginSuccess,
     function (error) { alert("" + error) }
   );
-  alert("2");
   
   var fbLoginSuccess = function (userData) {
     response = userData;
+    $.post('http://myth-hair.frog.tw/login_FB.php', $("#Form_" + Type).serialize(), function(data, status){
+      if(status == "success") {
+        $("#Alert_" + Type).html(data);
+        return true;
+      }
+    });
     alert("UserInfo: " + JSON.stringify(userData));
     facebookConnectPlugin.getAccessToken(function(token) {
         alert("Token: " + token);
