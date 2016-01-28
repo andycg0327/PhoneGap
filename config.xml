@@ -3,10 +3,11 @@
   <description>Hello World sample application that responds to the deviceready event.</description>
   <author href="http://phonegap.com" email="support@phonegap.com">PhoneGap Team</author>
   <content src="index.html"/>
+  <preference name="phonegap-version" value="3.7.0" />
   <preference name="permissions" value="none"/>
-  <preference name="orientation" value="default"/>
+  <preference name="orientation" value="portrait"/>
   <preference name="target-device" value="universal"/>
-  <preference name="fullscreen" value="true"/>
+  <preference name="fullscreen" value="false"/>
   <preference name="webviewbounce" value="true"/>
   <preference name="prerendered-icon" value="true"/>
   <preference name="stay-in-webview" value="false"/>
@@ -78,4 +79,8 @@
   </platform>
   <preference name="android-build-tool" value="gradle" />
   <plugin name="phonegap-plugin-push" source="npm" />
+  <plugin name="com.phonegap.plugins.facebookconnect" spec="0.9.0" source="pgb">
+    <param name="APP_ID" value="634530349985696" />
+    <param name="APP_NAME" value="Myth International" />
+  </plugin>
 </widget>
