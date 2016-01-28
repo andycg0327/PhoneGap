@@ -1,153 +1,167 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <!-- link rel="stylesheet" type="text/css" href="css/index.css" / -->
-        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-        <title>Hello World</title>
-    </head>
-    <body>
-	    <nav>
-	   	    <div class="nav-wrapper">
-                <a href="#" class="brand-logo">Push Demo</a>
-		    </div>
-		</nav>
-
-		<div class="row">
-		  <div class="col s12 m6">
-		    <div class="card darken-1">
-		      <div class="card-content black-text">
-		        <span class="card-title black-text">Registration ID</span>
-		        <p id="regId">Requested</p>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		
-		<div id="cards"></div>
-
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script type="text/javascript"></script>
+<head>
+<title>Myth 蜜絲雲端髮藝網</title>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+</head>
+<link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/additional-methods.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript">
-
 var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-            alert("AAA");
-        var push = PushNotification.init({
-            "android": {
-                "senderID": "100971030124"
-            },
-            "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
-            "windows": {} 
-        });
-        
-            alert("AAA");
-        push.on('registration', function(data) {
-            alert("registration event");
-            console.log("registration event");
-            document.getElementById("regId").innerHTML = data.registrationId;
-            console.log(JSON.stringify(data));
-            alert(JSON.stringify(data));
-        });
-
-        push.on('notification', function(data) {
-        	console.log("notification event");
-            console.log(JSON.stringify(data));
-            var cards = document.getElementById("cards");
-            var card = '<div class="row">' +
-		  		  '<div class="col s12 m6">' +
-				  '  <div class="card darken-1">' +
-				  '    <div class="card-content black-text">' +
-				  '      <span class="card-title black-text">' + data.title + '</span>' +
-				  '      <p>' + data.message + '</p>' +
-				  '    </div>' +
-				  '  </div>' +
-				  ' </div>' +
-				  '</div>';
-            cards.innerHTML += card;
-            
-            push.finish(function () {
-                console.log('finish successfully called');
-            });
-        });
-
-        push.on('error', function(e) {
-            console.log("push error");
-        });
-    }
+  initialize: function() {
+    this.bindEvents();
+  },
+  // Bind any events that are required on startup. Common events are:
+  // 'load', 'deviceready', 'offline', and 'online'.
+  bindEvents: function() {
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+  },
+  // deviceready Event Handler
+  //
+  // The scope of 'this' is the event. In order to call the 'receivedEvent'
+  // function, we must explicitly call 'app.receivedEvent(...);'
+  onDeviceReady: function() {
+    var push = PushNotification.init({
+      "android": {"senderID": "100971030124"},
+      "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
+      "windows": {}
+    });
+    push.on('registration', function(data) {
+      $("input[RegistrationID]").val(data.registrationId);
+    }).on('notification', function(data) {
+    }).on('error', function(e) {
+      console.log("push error");
+    });
+  }
 };
-
 app.initialize();
-/*var push = PushNotification.init({
-    android: {
-        senderID: "100971030124"
-    },
-    ios: {
-        alert: "true",
-        badge: "true",
-        sound: "true"
-    },
-    windows: {}
+
+$(document).ready(function(){
+  $("#Form_Register").validate();
+  $("#Form_Login").validate();
 });
 
-push.on('registration', function(data) {
-  alert("registration");
-    // data.registrationId
-});
+// Normal login
+function LoginSubmit(Type) {
+  if($("#Form_" + Type).valid()) {
+    $.post('http://myth-hair.frog.tw/login_phonegap.php', $("#Form_" + Type).serialize(), function(data, status){
+      if(status == "success") {
+        $("#Alert_" + Type).html(data);
+        return true;
+      }
+    });
+  }
+  return false;
+}
 
-push.on('notification', function(data) {
-  alert("notification");
-    // data.message,
-    // data.title,
-    // data.count,
-    // data.sound,
-    // data.image,
-    // data.additionalData
-});
+function FBLoginSubmit(Type) {
+  alert("1");
+  var response;
+  facebookConnectPlugin.login(["public_profile", "email"],
+    fbLoginSuccess,
+    function (error) { alert("" + error) }
+  );
+  alert("2");
+  
+  var fbLoginSuccess = function (userData) {
+    response = userData;
+    alert("UserInfo: " + JSON.stringify(userData));
+    facebookConnectPlugin.getAccessToken(function(token) {
+        alert("Token: " + token);
+    }, function(err) {
+        alert("Could not get access token: " + err);
+    });
+  }
 
-push.on('error', function(e) {
-  alert("error");
-    // e.message
-});*/
+  //return response;
+}
 </script>
-    </body>
+
+<body>
+<h2 class="text-center">Myth 蜜絲髮藝</h2>
+<div id="Div_Register" class="container collapse in">
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+      <form class="form-horizontal" id="Form_Register">
+      <input type="hidden" name="Type" value="Register" />
+      <input type="hidden" name="RegistrationID" value="" />
+      <div class="form-group has-feedback">
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-user form-control-feedback" style="left:25px"></span>
+          <select class="form-control" style="padding-left:40px; padding-right:12px" name="Role">
+          <option value="customer">消費者</option>
+          <option value="hairdresser">設計師</option>
+          </select>
+        </div>
+      </div>
+      <hr />
+      <div class="form-group has-feedback">
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          <input type="email" class="form-control email required" name="Account" placeholder="Email" />
+        </div>
+      </div>
+      <div class="form-group has-feedback">
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          <input type="password" class="form-control required" name="Password" placeholder="密碼" id="Password_Register" />
+        </div>
+      </div>
+      <div class="form-group has-feedback">
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          <input type="password" class="form-control required" name="Password_valid" placeholder="確認密碼" equalTo="#Password_Register" />
+        </div>
+      </div>
+      <div class="form-group has-feedback">
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-eye-open form-control-feedback"></span>
+          <input type="text" class="form-control required" name="Name" placeholder="稱呼" />
+        </div>
+      </div>
+      <p class="text-center"><button type="button" class="btn btn-primary btn-block" onClick="LoginSubmit('Register')" />註冊</button></p>
+      <hr />
+      <p class="text-center"><button type="button" class="btn btn-primary btn-block" onClick="FBLoginSubmit('Register')"><img src="https://www.facebookbrand.com/img/facebook.icon.png"> 使用 Facebook 註冊</button></p>
+      <div id="Alert_Register"></div>
+      <p class="text-center"><button type="button" class="btn btn-link" onclick="$('#Div_Register').fadeOut(500, function(){ $('#Div_Login').fadeIn(1000); });">已經有帳號? 按此登入</button></p>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="Div_Login" class="container collapse">
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+      <form class="form-horizontal" id="Form_Login">
+      <input type="hidden" name="Type" value="Login" />
+      <input type="hidden" name="RegistrationID" value="" />
+      <div class="form-group has-feedback">
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          <input type="email" class="form-control email required" name="Account" placeholder="Email" />
+        </div>
+      </div>
+      <div class="form-group has-feedback">
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          <input type="password" class="form-control required" name="Password" placeholder="密碼" />
+        </div>
+      </div>
+      <p class="text-center"><button type="button" class="btn btn-primary btn-block" onClick="LoginSubmit('Login')" />登入</button></p>
+      <hr />
+      <p class="text-center"><button type="button" class="btn btn-primary btn-block" onClick="FBLoginSubmit('Login')"><img src="https://www.facebookbrand.com/img/facebook.icon.png"> 使用 Facebook 登入</button></p>
+      <div id="Alert_Login"></div>
+      <p class="text-center"><button type="button" class="btn btn-link" onclick="$('#Div_Login').fadeOut(500, function(){ $('#Div_Register').fadeIn(1000); });">註冊新帳號</button></p>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
 </html>
