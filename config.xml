@@ -76,10 +76,10 @@
     <allow-intent href="itms:*"/>
     <allow-intent href="itms-apps:*"/>
   </platform>
+  <preference name="android-build-tool" value="gradle" />
+  <plugin name="phonegap-plugin-push" source="npm" />
   <plugin name="com.phonegap.plugins.facebookconnect" source="pgb">
     <param name="APP_ID" value="634530349985696" />
     <param name="APP_NAME" value="Myth International" />
   </plugin>
-  <preference name="android-build-tool" value="gradle" />
-  <plugin name="phonegap-plugin-push" source="npm" />
 </widget>
