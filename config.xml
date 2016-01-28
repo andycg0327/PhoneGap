@@ -78,8 +78,4 @@
   </platform>
   <preference name="android-build-tool" value="gradle" />
   <plugin name="phonegap-plugin-push" source="npm" />
-  <plugin name="com.phonegap.plugins.facebookconnect" spec="0.9.0" source="pgb">
-    <param name="APP_ID" value="634530349985696" />
-    <param name="APP_NAME" value="Myth International" />
-  </plugin>
 </widget>
