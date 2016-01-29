@@ -64,25 +64,25 @@ function LoginSubmit(Type) {
 
 function FBLoginSubmit(Type) {
   facebookConnectPlugin.login(["public_profile", "email"],
-    fbLoginSuccess,
-    function (error) { alert("" + error) }
+    function (userData) {
+      alert("fbLoginSuccess");
+      $.post('http://myth-hair.frog.tw/login_FB.php', $("#Form_" + Type).serialize(), function(data, status){
+        if(status == "success") {
+          $("#Alert_" + Type).html(data);
+          return true;
+        }
+      });
+      alert("UserInfo: " + JSON.stringify(userData));
+      facebookConnectPlugin.getAccessToken(function(token) {
+          alert("Token: " + token);
+      }, function(err) {
+          alert("Could not get access token: " + err);
+      });
+    },
+    function (error) {
+      alert("" + error);
+    }
   );
-  
-  var fbLoginSuccess = function (userData) {
-    alert("fbLoginSuccess");
-    $.post('http://myth-hair.frog.tw/login_FB.php', $("#Form_" + Type).serialize(), function(data, status){
-      if(status == "success") {
-        $("#Alert_" + Type).html(data);
-        return true;
-      }
-    });
-    alert("UserInfo: " + JSON.stringify(userData));
-    facebookConnectPlugin.getAccessToken(function(token) {
-        alert("Token: " + token);
-    }, function(err) {
-        alert("Could not get access token: " + err);
-    });
-  }
 }
 </script>
 <style>

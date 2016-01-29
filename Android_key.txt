@@ -2,4 +2,5 @@ For generate key file:
 keytool -genkey -v -keystore myth_hair.keystore -alias MythHair -keyalg RSA -keysize 2048 -validity 10000
 
 For facebook 28 chars:
+下載openssl 把openssl.exe放到同目錄(C:\Program Files\Java\jdk1.8.0_66\bin)下
 keytool -exportcert -alias MythHair -keystore myth_hair_FB.keystore | openssl sha1 -binary | openssl base64
