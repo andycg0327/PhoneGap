@@ -3,7 +3,7 @@
   <description>Cloud reservation platform for hairdressers, customers and salon.</description>
   <author href="http://myth-hair.frog.tw/" email="andycg0327@hotmail.com">PhoneGap Team</author>
   <content src="index.html"/>
-  <preference name="phonegap-version" value="cli-5.2.0" />
+  <preference name="phonegap-version" value="cli-5.2.0"/>
   <preference name="permissions" value="none"/>
   <preference name="orientation" value="portrait"/>
   <preference name="target-device" value="universal"/>
@@ -20,7 +20,7 @@
   <preference name="disable-cursor" value="false"/>
   <preference name="android-minSdkVersion" value="14"/>
   <preference name="android-installLocation" value="auto"/>
-  <preference name="android-build-tool" value="gradle" />
+  <preference name="android-build-tool" value="gradle"/>
   <gap:plugin name="org.apache.cordova.battery-status"/>
   <gap:plugin name="org.apache.cordova.camera"/>
   <gap:plugin name="org.apache.cordova.media-capture"/>
@@ -40,7 +40,11 @@
   <gap:plugin name="org.apache.cordova.splashscreen"/>
   <gap:plugin name="org.apache.cordova.vibration"/>
   <plugin name="cordova-plugin-whitelist" />
-  <plugin name="com.phonegap.plugins.pushplugin" spec="2.5.0" source="pgb" />
+  <plugin name="com.phonegap.plugins.facebookconnect" spec="0.9.0" source="pgb">
+    <param name="APP_ID" value="634530349985696"/>
+    <param name="APP_NAME" value="Myth International"/>
+  </plugin>
+  <plugin name="com.phonegap.plugins.pushplugin" spec="2.5.0" source="pgb"/>
   <icon src="icon.png"/>
   <icon src="www/res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
   <icon src="www/res/icon/android/icon-48-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
