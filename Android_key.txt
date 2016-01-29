@@ -1,0 +1,5 @@
+For generate key file:
+keytool -genkey -v -keystore myth_hair.keystore -alias MythHair -keyalg RSA -keysize 2048 -validity 10000
+
+For facebook 28 chars:
+keytool -exportcert -alias MythHair -keystore myth_hair_FB.keystore | openssl sha1 -binary | openssl base64
