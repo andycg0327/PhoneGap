@@ -83,5 +83,5 @@
     <param name="APP_ID" value="634530349985696" />
     <param name="APP_NAME" value="Myth International" />
   </plugin>
-  <plugin name="phonegap-plugin-push" spec="~1.5.3" source="npm" />
+  <plugin name="phonegap-plugin-push" spec="~1.5.2" source="npm" />
 </widget>
