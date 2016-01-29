@@ -44,7 +44,7 @@
     <param name="APP_ID" value="634530349985696" />
     <param name="APP_NAME" value="Myth International" />
   </plugin>
-  <plugin name="com.phonegap.plugins.pushplugin" source="pgb" />
+  <plugin name="com.phonegap.plugins.pushplugin" spec="2.5.0" source="pgb" />
   <icon src="icon.png"/>
   <icon src="www/res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
   <icon src="www/res/icon/android/icon-48-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
