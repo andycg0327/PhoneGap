@@ -65,13 +65,17 @@ function LoginSubmit(Type) {
 function FBLoginSubmit(Type) {
   facebookConnectPlugin.login(["public_profile", "email"],
     function (response) {
-      alert(response);
       if (response.status === 'connected') {
-        $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
-          if(status == "success") {
-            $("#Alert_" + Type).html(data);
-            return true;
-          }
+        facebookConnectPlugin.getAccessToken(function(token) {
+          $("input[name=AccessToken]").val(token);
+          $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
+            if(status == "success") {
+              $("#Alert_" + Type).html(data);
+              return true;
+            }
+          });
+        }, function(err) {
+            alert("Could not get access token: " + err);
         });
       }
       else if (response.status === 'not_authorized')
@@ -97,6 +101,7 @@ function FBLoginSubmit(Type) {
       <form class="form-horizontal" id="Form_Register">
       <input type="hidden" name="Type" value="Register" />
       <input type="hidden" name="RegistrationID" value="" />
+      <input type="hidden" name="AccessToken" value="" />
       <div class="form-group has-feedback">
         <div class="col-xs-12">
           <span class="glyphicon glyphicon-user form-control-feedback" style="left:25px"></span>
@@ -140,6 +145,7 @@ function FBLoginSubmit(Type) {
       <form class="form-horizontal" id="Form_Login">
       <input type="hidden" name="Type" value="Login" />
       <input type="hidden" name="RegistrationID" value="" />
+      <input type="hidden" name="AccessToken" value="" />
       <div class="form-group has-feedback">
         <div class="col-xs-12">
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
