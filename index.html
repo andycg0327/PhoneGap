@@ -63,21 +63,43 @@ function LoginSubmit(Type) {
 }
 
 function FBLoginSubmit(Type) {
+  FB.login(function(response) {
+    if (response.status === 'connected') {
+      FB.api('/me', function(response) {
+        $.post('loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
+          if(status == "success") {
+            $("#Alert_" + Type).html(data);
+            grecaptcha.reset(Recaptcha);
+            return true;
+          }
+        });
+        //$("#Alert_" + Type).load("loginFB.php?Type=" + Type);
+      });
+    }
+    else if (response.status === 'not_authorized')
+      $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未授權本系統。</div>');
+    else
+      $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未登入Facebook。</div>');
+  }, {scope: 'public_profile, email'});
+}
+function FBLoginSubmit(Type) {
   facebookConnectPlugin.login(["public_profile", "email"],
-    function (userData) {
-      alert("fbLoginSuccess");
-      $.post('http://myth-hair.frog.tw/login_FB.php', $("#Form_" + Type).serialize(), function(data, status){
-        if(status == "success") {
-          $("#Alert_" + Type).html(data);
-          return true;
-        }
-      });
-      alert("UserInfo: " + JSON.stringify(userData));
-      facebookConnectPlugin.getAccessToken(function(token) {
-          alert("Token: " + token);
-      }, function(err) {
-          alert("Could not get access token: " + err);
-      });
+    function (response) {
+      if (response.status === 'connected') {
+        FB.api('/me', function(response) {
+          $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
+            if(status == "success") {
+              $("#Alert_" + Type).html(data);
+              return true;
+            }
+          });
+          //$("#Alert_" + Type).load("loginFB.php?Type=" + Type);
+        });
+      }
+      else if (response.status === 'not_authorized')
+        $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未授權本系統。</div>');
+      else
+        $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未登入Facebook。</div>');
     },
     function (error) {
       alert("" + error);
