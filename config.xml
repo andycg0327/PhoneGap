@@ -1,7 +1,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.phonegap.mythhair" version="1.0.0">
-  <name>Myth Hair</name>
+  <name>Myth 蜜絲髮藝</name>
   <description>Cloud reservation platform for hairdressers, customers and salon.</description>
-  <author href="http://myth-hair.frog.tw/" email="andycg0327@hotmail.com">PhoneGap Team</author>
+  <author href="http://myth-hair.frog.tw/" email="andycg0327@hotmail.com">Myth International</author>
   <content src="index.html"/>
   <preference name="phonegap-version" value="cli-5.2.0" />
   <preference name="permissions" value="none"/>
