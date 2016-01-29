@@ -39,7 +39,7 @@
   <gap:plugin name="org.apache.cordova.network-information"/>
   <gap:plugin name="org.apache.cordova.splashscreen"/>
   <gap:plugin name="org.apache.cordova.vibration"/>
-  <plugin name="cordova-plugin-whitelist" spec="1" />
+  <plugin name="cordova-plugin-whitelist" />
   <plugin name="com.phonegap.plugins.facebookconnect" spec="0.9.0" source="pgb">
     <param name="APP_ID" value="634530349985696" />
     <param name="APP_NAME" value="Myth International" />
