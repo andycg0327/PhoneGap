@@ -59,9 +59,14 @@ $(document).ready(function(){
 function LoginSubmit(Type) {
   if($("#Form_" + Type).valid()) {
     $.post('http://myth-hair.frog.tw/login.php', $("#Form_" + Type).serialize(), function(data, status){
-      if(status == "success") {
-        $("#Alert_" + Type).html(data);
+      if(status == "success" && data == "OK") {
+        localStorage.Account = $("#Account").val();
+        localStorage.Password = $("#Password").val();
+        localStorage.removeItem("FacebookID");
+        window.open("./main.html", "_self");
         return true;
+      } else
+        $("#Alert_" + Type).html(data);
       }
     });
   }
@@ -75,9 +80,14 @@ function FBLoginSubmit(Type) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $("input[name=AccessToken]").val(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
-            if(status == "success") {
-              $("#Alert_" + Type).html(data);
+            if(status == "success" && data == "OK") {
+              localStorage.FacebookID = response.authResponse.userID;
+              localStorage.removeItem("Account");
+              localStorage.removeItem("Password");
+              window.open("./main.html", "_self");
               return true;
+            } else
+              $("#Alert_" + Type).html(data);
             }
           });
         }, function(err) {
@@ -93,6 +103,7 @@ function FBLoginSubmit(Type) {
       alert("" + error);
     }
   );
+  return false;
 }
 </script>
 <style>

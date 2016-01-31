@@ -25,6 +25,7 @@ var app = {
 app.initialize();
 
 function onBackKeyDown() {
+  alert("A".$("#iframe").attr('src'));
   if($("#iframe").attr('src').indexOf("action=") != -1)
     $("#iframe").attr('src', "http://myth-hair.frog.tw/");
 }
