@@ -40,6 +40,12 @@ var app = {
     }).on('error', function(e) {
       console.log("push error");
     });
+    if(localStorage.Account && localStorage.Password) {
+      $("#Account").val(localStorage.Account);
+      $("#Password").val(localStorage.Password);
+      LoginSubmit('Login');
+    } else if(localStorage.FacebookID)
+      FBLoginSubmit('Login');
   }
 };
 app.initialize();
@@ -121,7 +127,7 @@ function FBLoginSubmit(Type) {
       <div class="form-group has-feedback">
         <div class="col-xs-12">
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          <input type="password" class="form-control required" name="Password" placeholder="密碼" id="Password_Register" />
+          <input type="password" class="form-control required" name="Password" placeholder="密碼" />
         </div>
       </div>
       <div class="form-group has-feedback">
@@ -149,13 +155,13 @@ function FBLoginSubmit(Type) {
       <div class="form-group has-feedback">
         <div class="col-xs-12">
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          <input type="email" class="form-control email required" name="Account" placeholder="Email" />
+          <input type="email" class="form-control email required" name="Account" id="Account" placeholder="Email" />
         </div>
       </div>
       <div class="form-group has-feedback">
         <div class="col-xs-12">
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          <input type="password" class="form-control required" name="Password" placeholder="密碼" />
+          <input type="password" class="form-control required" name="Password" id="Password" placeholder="密碼" />
         </div>
       </div>
       <p class="text-center"><button type="button" class="btn btn-primary btn-block" onClick="LoginSubmit('Login')" />登入</button></p>
