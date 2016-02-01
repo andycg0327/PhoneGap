@@ -41,14 +41,11 @@ var app = {
       console.log("push error");
     });
   
-    alert(localStorage.Account);
-    alert(localStorage.Password);
-    alert(localStorage.FacebookID);
-    if(localStorage.Account && localStorage.Password) {
-      $("#Account").val(localStorage.Account);
-      $("#Password").val(localStorage.Password);
+    if(window.localStorage.Account && window.localStorage.Password) {
+      $("#Account").val(window.localStorage.Account);
+      $("#Password").val(window.localStorage.Password);
       LoginSubmit('Login');
-    } else if(localStorage.FacebookID)
+    } else if(window.localStorage.FacebookID)
       FBLoginSubmit('Login');
   }
 };
@@ -67,7 +64,7 @@ function LoginSubmit(Type) {
         localStorage.Account = $("#Account").val();
         localStorage.Password = $("#Password").val();
         localStorage.removeItem("FacebookID");
-        window.open("./main.html", "_self");
+        window.location = "./main.html";
         return true;
       } else
         $("#Alert_" + Type).html(data);
@@ -87,7 +84,7 @@ function FBLoginSubmit(Type) {
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
               localStorage.removeItem("Password");
-              window.open("./main.html", "_self");
+              window.location = "./main.html";
               return true;
             } else
               $("#Alert_" + Type).html(data);

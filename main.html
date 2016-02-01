@@ -20,13 +20,24 @@ var app = {
   },
   onDeviceReady: function() {
     document.addEventListener("backbutton", onBackKeyDown, false);
+    window.addEventListener('message', function(event) {
+      if(event.origin !== 'http://myth-hair.frog.tw/')
+        return;
+      if(event.data == "onClose")
+        backbutton = true;
+        setTimeout(function(){ backbutton = false; }, 2000);
+    }, false);
   }
 };
 app.initialize();
 
-var iframe = document.getElementById('iframe');
+var backbutton = false;
+//var iframe = document.getElementById('iframe').contentWindow;
 function onBackKeyDown() {
-alert(iframe.contentWindow.location.href);
+  if(backbutton)
+    (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
+  else
+    document.getElementById('iframe').contentWindow.postMessage("onBackKeyDown", 'http://myth-hair.frog.tw/');
 }
 </script>
 <style>
