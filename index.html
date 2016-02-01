@@ -40,12 +40,6 @@ var app = {
     }).on('error', function(e) {
       console.log("push error");
     });
-    if(localStorage.Account && localStorage.Password) {
-      $("#Account").val(localStorage.Account);
-      $("#Password").val(localStorage.Password);
-      LoginSubmit('Login');
-    } else if(localStorage.FacebookID)
-      FBLoginSubmit('Login');
   }
 };
 app.initialize();
@@ -53,6 +47,16 @@ app.initialize();
 $(document).ready(function(){
   $("#Form_Register").validate();
   $("#Form_Login").validate();
+  
+  alert(localStorage.Account);
+  alert(localStorage.Password);
+  alert(localStorage.FacebookID);
+  if(localStorage.Account && localStorage.Password) {
+    $("#Account").val(localStorage.Account);
+    $("#Password").val(localStorage.Password);
+    LoginSubmit('Login');
+  } else if(localStorage.FacebookID)
+    FBLoginSubmit('Login');
 });
 
 // Normal login
