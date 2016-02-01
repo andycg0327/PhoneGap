@@ -67,7 +67,6 @@ function LoginSubmit(Type) {
         return true;
       } else
         $("#Alert_" + Type).html(data);
-      }
     });
   }
   return false;
@@ -88,7 +87,6 @@ function FBLoginSubmit(Type) {
               return true;
             } else
               $("#Alert_" + Type).html(data);
-            }
           });
         }, function(err) {
             alert("Could not get access token: " + err);
