@@ -20,7 +20,9 @@ var app = {
   },
   onDeviceReady: function() {
     document.addEventListener("backbutton", onBackKeyDown, false);
-    document.addEventListener('message', function(e) {
+    window.addEventListener('message', function(e) {
+      alert("AA");
+      alert(e.data);
       if(e.origin !== 'http://myth-hair.frog.tw/')
         return;
       if(e.data == "onClose")
@@ -34,10 +36,14 @@ app.initialize();
 var backbutton = false;
 //var iframe = document.getElementById('iframe').contentWindow;
 function onBackKeyDown() {
+  alert("B");
   if(backbutton)
     (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
-  else
+  else {
+    alert("BeforePost");
     document.getElementById('iframe').contentWindow.postMessage("onBackKeyDown", 'http://myth-hair.frog.tw/');
+    alert("Post");
+  }
 }
 </script>
 <style>
