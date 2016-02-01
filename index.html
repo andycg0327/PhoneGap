@@ -22,7 +22,7 @@ var app = {
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
       alert(e.origin);
-      if(e.origin !== 'http://myth-hair.frog.tw/')
+      if(e.origin != 'http://myth-hair.frog.tw/')
         return;
       alert(e.data);
       if(e.data == "onClose") {
