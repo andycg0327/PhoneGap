@@ -24,12 +24,9 @@ var app = {
 };
 app.initialize();
 
+var iframe = document.getElementById('iframe');
 function onBackKeyDown() {
-alert("AA");
-  alert($("#iframe").attr('src'));
-  alert($("#iframe").attr('src').indexOf("action="));
-  if($("#iframe").attr('src').indexOf("action=") != -1)
-    $("#iframe").attr('src', "http://myth-hair.frog.tw/");
+alert(iframe.contentWindow.location.href);
 }
 </script>
 <style>

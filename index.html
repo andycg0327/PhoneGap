@@ -40,6 +40,16 @@ var app = {
     }).on('error', function(e) {
       console.log("push error");
     });
+  
+    alert(localStorage.Account);
+    alert(localStorage.Password);
+    alert(localStorage.FacebookID);
+    if(localStorage.Account && localStorage.Password) {
+      $("#Account").val(localStorage.Account);
+      $("#Password").val(localStorage.Password);
+      LoginSubmit('Login');
+    } else if(localStorage.FacebookID)
+      FBLoginSubmit('Login');
   }
 };
 app.initialize();
@@ -47,16 +57,6 @@ app.initialize();
 $(document).ready(function(){
   $("#Form_Register").validate();
   $("#Form_Login").validate();
-  
-  alert(localStorage.Account);
-  alert(localStorage.Password);
-  alert(localStorage.FacebookID);
-  if(localStorage.Account && localStorage.Password) {
-    $("#Account").val(localStorage.Account);
-    $("#Password").val(localStorage.Password);
-    LoginSubmit('Login');
-  } else if(localStorage.FacebookID)
-    FBLoginSubmit('Login');
 });
 
 // Normal login
@@ -83,8 +83,6 @@ function FBLoginSubmit(Type) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $("input[name=AccessToken]").val(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
-            alert(status);
-            alert(data);
             if(status == "success" && data == "OK") {
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
