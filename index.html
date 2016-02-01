@@ -29,7 +29,6 @@ var app = {
   // The scope of 'this' is the event. In order to call the 'receivedEvent'
   // function, we must explicitly call 'app.receivedEvent(...);'
   onDeviceReady: function() {
-    alert("onDeviceReady");
     var push = PushNotification.init({
       "android": {"senderID": "100971030124", "icon": "icon",},
       "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
@@ -37,19 +36,11 @@ var app = {
     });
     push.on('registration', function(data) {
       $("input[name=RegistrationID]").val(data.registrationId);
-    alert("RegistrationID");
-      try{
-        alert(window.localStorage.getItem("Account"));
-        alert(window.localStorage.getItem("Password"));
-        alert(window.localStorage.getItem("FacebookID"));
-      } catch(err) {
-        alert(err);
-      }
-      if(window.localStorage.getItem("Account") && window.localStorage.getItem("Password")) {
-        $("#Account").val(window.localStorage.getItem("Account"));
-        $("#Password").val(window.localStorage.getItem("Password"));
+      if(localStorage.Account && localStorage.Password) {
+        $("#Account").val(localStorage.Account);
+        $("#Password").val(localStorage.Password);
         LoginSubmit('Login');
-      } else if(window.localStorage.getItem("FacebookID"))
+      } else if(localStorage.FacebookID)
         FBLoginSubmit('Login');
     }).on('notification', function(data) {
     }).on('error', function(e) {
@@ -61,16 +52,8 @@ var app = {
 app.initialize();
 
 $(document).ready(function(){
-    alert("documentReady");
   $("#Form_Register").validate();
   $("#Form_Login").validate();
-    try{
-      alert(window.localStorage.getItem("Account"));
-      alert(window.localStorage.getItem("Password"));
-      alert(window.localStorage.getItem("FacebookID"));
-    } catch(err) {
-      alert(err);
-    }
 });
 
 // Normal login
