@@ -42,20 +42,17 @@ var app = {
     });
   
     try{
-      alert(localStorage.Account);
-      alert(localStorage.Password);
-      alert(localStorage.FacebookID);
-      alert(window.localStorage.Account);
-      alert(window.localStorage.Password);
-      alert(window.localStorage.FacebookID);
+      alert(window.localStorage.getItem("Account"));
+      alert(window.localStorage.getItem("Password"));
+      alert(window.localStorage.getItem("FacebookID"));
     } catch(err) {
       alert(err);
     }
-    if(window.localStorage.Account && window.localStorage.Password) {
-      $("#Account").val(window.localStorage.Account);
-      $("#Password").val(window.localStorage.Password);
+    if(window.localStorage.getItem("Account") && window.localStorage.getItem("Password")) {
+      $("#Account").val(window.localStorage.getItem("Account"));
+      $("#Password").val(window.localStorage.getItem("Password"));
       LoginSubmit('Login');
-    } else if(window.localStorage.FacebookID)
+    } else if(window.localStorage.getItem("FacebookID"))
       FBLoginSubmit('Login');
   }
 };
@@ -64,6 +61,13 @@ app.initialize();
 $(document).ready(function(){
   $("#Form_Register").validate();
   $("#Form_Login").validate();
+    try{
+      alert(window.localStorage.getItem("Account"));
+      alert(window.localStorage.getItem("Password"));
+      alert(window.localStorage.getItem("FacebookID"));
+    } catch(err) {
+      alert(err);
+    }
 });
 
 // Normal login
