@@ -41,6 +41,12 @@ var app = {
       console.log("push error");
     });
   
+    console.log(localStorage.Account);
+    console.log(localStorage.Password);
+    console.log(localStorage.FacebookID);
+    console.log(window.localStorage.Account);
+    console.log(window.localStorage.Password);
+    console.log(window.localStorage.FacebookID);
     if(window.localStorage.Account && window.localStorage.Password) {
       $("#Account").val(window.localStorage.Account);
       $("#Password").val(window.localStorage.Password);
