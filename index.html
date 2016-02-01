@@ -79,6 +79,8 @@ function FBLoginSubmit(Type) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $("input[name=AccessToken]").val(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
+            alert(status);
+            alert(data);
             if(status == "success" && data == "OK") {
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
