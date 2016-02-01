@@ -22,13 +22,13 @@ var app = {
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
       alert(e.origin);
-      alert(e.origin != 'http://myth-hair.frog.tw/');
+      alert(e.origin.toString() != "http://myth-hair.frog.tw/");
       //if(e.origin != 'http://myth-hair.frog.tw/')
       //  return;
-      alert(e.data);
       if(e.data == "onClose") {
         backbutton = true;
         setTimeout(function(){ backbutton = false; }, 2000);
+        window.plugins.toast.showShortBottom('再按一次關閉程式');
         alert(backbutton);
       }
     }, false);
