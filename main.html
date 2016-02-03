@@ -27,6 +27,12 @@ var app = {
         backbutton = true;
         setTimeout(function(){ backbutton = false; }, 2000);
         window.plugins.toast.showShortBottom('再按一次關閉程式');
+      } else if(e.data == "onSpinnerShow") {
+        window.plugins.spinnerDialog.show(null, null, true);
+      } else if(e.data == "onSpinnerHide") {
+        window.plugins.spinnerDialog.hide();
+      } else {
+        window.open(e.data, '_system', 'location=no');
       }
     }, false);
   }
@@ -40,6 +46,9 @@ function onBackKeyDown() {
   else {
     document.getElementById('iframe').contentWindow.postMessage("onBackKeyDown", 'http://myth-hair.frog.tw');
   }
+}
+function a() {
+  window.open('fb://page/DingNinglove/', '_system', 'location=no');
 }
 </script>
 <style>
@@ -60,5 +69,6 @@ iframe {
 
 <body>
 <iframe id="iframe" src="http://myth-hair.frog.tw/phonegap.php"></iframe>
+<button onclick="a()">123</button>
 </body>
 </html>
