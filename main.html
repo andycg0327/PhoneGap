@@ -21,10 +21,8 @@ var app = {
   onDeviceReady: function() {
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
-        alert("window.addEventListener");
       if(e.origin != 'http://myth-hair.frog.tw')
         return;
-        alert(e.data);
       if(e.data == "onClose") {
         backbutton = true;
         setTimeout(function(){ backbutton = false; }, 2000);
@@ -49,9 +47,6 @@ function onBackKeyDown() {
     document.getElementById('iframe').contentWindow.postMessage("onBackKeyDown", 'http://myth-hair.frog.tw');
   }
 }
-function a() {
-  window.open($("#URLTTT").val(), '_system', 'location=no');
-}
 </script>
 <style>
 html {
@@ -71,6 +66,5 @@ iframe {
 
 <body>
 <iframe id="iframe" src="http://myth-hair.frog.tw/phonegap.php"></iframe>
-<button onclick="a()">123</button><input type="text" class="form-control required" id="URLTTT" placeholder="" />
 </body>
 </html>
