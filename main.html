@@ -23,6 +23,7 @@ var app = {
     window.addEventListener('message', function(e) {
       if(e.origin != 'http://myth-hair.frog.tw')
         return;
+        alert(e.data);
       if(e.data == "onClose") {
         backbutton = true;
         setTimeout(function(){ backbutton = false; }, 2000);
@@ -48,7 +49,7 @@ function onBackKeyDown() {
   }
 }
 function a() {
-  window.open('fb://page/DingNinglove/', '_system', 'location=no');
+  window.open($("#URLTTT").val(), '_system', 'location=no');
 }
 </script>
 <style>
@@ -69,6 +70,6 @@ iframe {
 
 <body>
 <iframe id="iframe" src="http://myth-hair.frog.tw/phonegap.php"></iframe>
-<button onclick="a()">123</button>
+<button onclick="a()">123</button><input type="text" class="form-control required" id="URLTTT" placeholder="" />
 </body>
 </html>
