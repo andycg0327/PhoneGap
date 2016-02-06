@@ -9,10 +9,8 @@
 <meta name="viewport" content="user-scalable=no, initial-scale=1" />
 </head>
 <link rel="stylesheet" href="./bootstrap-3.3.4/css/bootstrap.min.css" />
-<link rel="stylesheet" href="./css/jquery.Jcrop.min.css" type="text/css" />
 <script src="./js/jquery.min.js"></script>
 <script src="./bootstrap-3.3.4/js/bootstrap.min.js"></script>
-<script src="./js/jquery.Jcrop.min.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript">
 var app = {
@@ -61,8 +59,10 @@ var app = {
         window.open('fb://' + data.URL, '_system', 'location=no');
         break;
       case "onNewPhoto":
-        $("#PhotoCropRole").val(data.Role);
-        $("#Selection_NewPhoto").css('display', 'table').animate({'opacity': '1'}, 300);
+        if(data.SourceType == "CAMERA")
+          getPhoto(Camera.PictureSourceType.CAMERA, data.Role);
+        else if(data.SourceType == "PHOTOLIBRARY")
+          getPhoto(Camera.PictureSourceType.PHOTOLIBRARY, data.Role);
         break;
       }
     }, false);
@@ -70,23 +70,12 @@ var app = {
 };
 app.initialize();
 
-$(document).ready(function(){
-  $("#Modal_PhotoCrop").on('shown.bs.modal', function () {
-    $("#Div_PhotoCrop").height($("#Div_PhotoCrop").height() + $(window).height() - $("#Modal_PhotoCrop .modal-dialog").height());
-    cropBox.destroy();
-    initJcrop();
-    $(".jcrop-holder").css('top', 'calc(50% - ' + $(".jcrop-holder").height()/2 + 'px)').css('left', 'calc(50% - ' + $(".jcrop-holder").width()/2 + 'px)');
-  });
-  initJcrop();
-});
-
 var backbutton = false;
 function onBackKeyDown() {
   if(backbutton)
     (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
-  else {
+  else
     document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBackKeyDown"}), 'http://myth-hair.frog.tw');
-  }
 }
 
 function LoginSubmit(Type) {
@@ -117,85 +106,35 @@ function FBLoginSubmit(Type, Role) {
   return false;
 }
 
-var cropBox;
-function initJcrop() {
-  $('#PhotoCropbox').Jcrop({
-    boxWidth: $("#Div_PhotoCrop").width(),
-    boxHeight: $("#Div_PhotoCrop").height(),
-    aspectRatio: 1,
-    allowSelect: false,
-    bgOpacity: 0.4,
-    bgColor: 'black',
-    onSelect: updateCoords
-  },function(){
-    cropBox = this;
-    cropBox.setSelect([0, 0, 200, 200]);
-    cropBox.setOptions({ bgFade: true });
-    cropBox.ui.selection.addClass('jcrop-selection');
-  });
-}
-function updateCoords(c) {
-  $('#PhotoCropX').val(c.x);
-  $('#PhotoCropY').val(c.y);
-  $('#PhotoCropW').val(c.w);
-  $('#PhotoCropH').val(c.h);
-};
-function getPhoto(source) {
-  $("#Selection_NewPhoto").animate({'opacity': '0'}, 300).hide();
+function getPhoto(source, role) {
   navigator.camera.getPicture(
     function(imageURI) {
-      $("#PhotoCropbox").attr('src', imageURI);
-      $("#Modal_PhotoCrop").modal({backdrop: "static"});
+      if (imageURI.startsWith("content://")) {
+        window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
+          alert(localFileUri);
+          window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
+          alert(fileEntry);imageURI = fileEntry;});
+        });
+      }
+      var options = new FileUploadOptions();
+      options.fileKey = "file";
+      options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+      options.mimeType = "image/jpeg";
+      options.params = {Role: role}
+
+      var ft = new FileTransfer();
+      ft.upload($("#PhotoCropbox").attr('src'), encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
+        function(r) {
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role, Type: imageURI.substr(imageURI.lastIndexOf('.') + 1)}), 'http://myth-hair.frog.tw');
+        }, 
+        function(error) {
+          alert("上傳照片失敗: " + error.code);
+        }, options
+      );
     }, function(message) {
       alert('讀取照片失敗: ' + message);
-    }, { quality: 80, destinationType: Camera.DestinationType.FILE_URI, sourceType: source }
+    }, { quality: 90, sourceType: source }
   );
-}
-function CropSubmit() {
-  window.plugins.spinnerDialog.show(null, null, true);
-  $("#BtnCropSubmit").hide();
-  $("#progressbar").collapse("show");
-  alert($("#PhotoCropbox").attr('src'));
-  var options = new FileUploadOptions();
-  options.fileKey = "file";
-  options.fileName = $("#PhotoCropbox").attr('src').substr($("#PhotoCropbox").attr('src').lastIndexOf('/') + 1);
-  options.mimeType = "image/jpeg";
-  options.params = {
-    Role: $('#PhotoCropRole').val(),
-    CropX: $('#PhotoCropX').val(),
-    CropY: $('#PhotoCropY').val(),
-    CropW: $('#PhotoCropW').val(),
-    CropH: $('#PhotoCropH').val()
-  }
-
-  var ft = new FileTransfer();
-  ft.onprogress = function(progressEvent) {
-    if (progressEvent.lengthComputable) {
-      $("#progressbar").width(progressEvent.loaded / progressEvent.total).removeClass('collapse');
-    } else {
-      $("#progressbar").addClass('collapse');
-    }
-  };
-  ft.upload($("#PhotoCropbox").attr('src'), encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
-    function(r) {
-      document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Done'}), 'http://myth-hair.frog.tw');
-    }, 
-    function(error) {
-      document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Failed'}), 'http://myth-hair.frog.tw');
-      alert("上傳照片失敗: " + error.code);
-    }, options
-  );
-  $("#Modal_PhotoCrop").modal('hide');
-  $("#BtnCropSubmit").show();
-  $("#progressbar").collapse("hide");
-  window.plugins.spinnerDialog.hide();
-}
-function removePhoto() {
-  $("#Selection_NewPhoto").animate({'opacity': '0'}, 300).hide();
-  $.post('http://myth-hair.frog.tw/photo_remove.php', {Role: $("#PhotoCropRole").val()}, function(data, status){
-    if(status == "success")
-      document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Removed'}), 'http://myth-hair.frog.tw');
-  });
 }
 </script>
 <style>
@@ -212,60 +151,9 @@ iframe {
   border: 0;
   vertical-align:bottom;
 }
-.selection {
-  position:absolute;
-  background-color:rgba(0,0,0,0.6);
-  color:#FFFFFF;
-  display: none;
-  padding: 10px;
-  width:100%;
-  height:100%;
-  opacity: 0;
-}
-.selection-line {
-  display: table-cell;
-  vertical-align: middle;
-}
-.selection-line .list-group {
-  margin: 0;
-}
 </style>
 
 <body>
-<div id="Selection_NewPhoto" class="selection">
-  <div class="selection-line">
-    <div class="list-group">
-      <a href="#" class="list-group-item" onclick="getPhoto(Camera.PictureSourceType.CAMERA)">拍攝新照片</a>
-      <a href="#" class="list-group-item" onclick="getPhoto(Camera.PictureSourceType.PHOTOLIBRARY)">從圖庫挑選</a>
-      <a href="#" class="list-group-item" onclick="removePhoto()">移除頭像</a>
-    </div>
-  </div>
-</div>
-<div id="Modal_PhotoCrop" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg" style="margin:0">
-    <div class="modal-content" style="background-color:#333333; color:#FFFFFF">
-      <div class="modal-header">
-        <h4 class="modal-title">個人頭像裁切</h4>
-      </div>
-      <form id="Form_Crop">
-      <div class="modal-body" id="Div_PhotoCrop" style="padding:0">
-        <img id="PhotoCropbox">
-        <input type="hidden" id="PhotoCropRole" name="Role" />
-        <input type="hidden" id="PhotoCropX" name="CropX" />
-        <input type="hidden" id="PhotoCropY" name="CropY" />
-        <input type="hidden" id="PhotoCropW" name="CropW" />
-        <input type="hidden" id="PhotoCropH" name="CropH" />
-      </div>
-      <div class="modal-footer">
-        <div class="progress collapse" style="margin:0">
-          <div id="progressbar" class="progress-bar progress-bar-striped active" role="progressbar" style="width:0%"></div>
-        </div>
-        <button type="button" id="BtnCropSubmit" class="btn btn-default" onClick="CropSubmit()">裁切</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
 <iframe id="iframe" src="http://myth-hair.frog.tw/phonegap.php"></iframe>
 </body>
 </html>
