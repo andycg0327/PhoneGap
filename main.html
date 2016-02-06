@@ -113,15 +113,19 @@ function getPhoto(source, role) {
       alert(actualURI);
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
-          actualURI = "file://" + localFileUri;
+      alert(localFileUri);
+          actualURI = "file:///" + localFileUri;
+      alert(actualURI);
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
+          actualURI = "file:///" + fileEntry.fullPath;
+      alert(actualURI);
           });
         });
       }
       alert(actualURI);
       var options = new FileUploadOptions();
       options.fileKey = "file";
-      options.fileName = "Photo.jpg";
+      options.fileName = "photo.jpg";
       options.mimeType = "image/jpeg";
       options.params = {Role: role}
 
