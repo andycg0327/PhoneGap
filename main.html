@@ -109,8 +109,10 @@ function FBLoginSubmit(Type, Role) {
 function getPhoto(source, role) {
   navigator.camera.getPicture(
     function(imageURI) {
+      alert("A");
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
+      alert("A");
           imageURI = "file://" + localFileUri;
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
             alert(fileEntry.name);
@@ -119,14 +121,18 @@ function getPhoto(source, role) {
           });
         });
       }
+      alert("A");
       var options = new FileUploadOptions();
       options.fileKey = "file";
+      alert("A");
       options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
       options.mimeType = "image/jpeg";
+      alert("A");
       options.params = {Role: role}
 
+      alert("A");
       var ft = new FileTransfer();
-      ft.upload($("#PhotoCropbox").attr('src'), encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
+      ft.upload(imageURI, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
         function(r) {
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role, Type: imageURI.substr(imageURI.lastIndexOf('.') + 1)}), 'http://myth-hair.frog.tw');
         }, 
