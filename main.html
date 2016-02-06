@@ -90,6 +90,9 @@ $(document).ready(function(){
     initJcrop();
     $(".jcrop-holder").css('top', 'calc(50% - ' + $(".jcrop-holder").height()/2 + 'px)').css('left', 'calc(50% - ' + $(".jcrop-holder").width()/2 + 'px)');
   });
+  $("#Modal_PhotoCrop").modal({backdrop: "static"});
+  
+  $("#PhotoCropbox").attr('src', "file:///C:/Users/Cheng-Ting/Pictures/cc.jpg");
 });
 
 // Normal login
@@ -157,6 +160,7 @@ function getPhoto(source) {
   );
 }
 function CropSubmit() {
+  alert("AA");
   var options = new FileUploadOptions();
   options.fileKey = "file";
   options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
@@ -168,8 +172,10 @@ function CropSubmit() {
     CropW: $('#PhotoCropW').val(),
     CropH: $('#PhotoCropH').val()
   }
+  alert("BB");
 
   var ft = new FileTransfer();
+  alert("CC");
   ft.onprogress = function(progressEvent) {
     if (progressEvent.lengthComputable) {
       $("#progressbar").width(progressEvent.loaded / progressEvent.total).removeClass('collapse');
@@ -177,15 +183,19 @@ function CropSubmit() {
       $("#progressbar").addClass('collapse');
     }
   };
+  alert("DD");
   ft.upload(imageURI, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
     function(r) {
       document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Done'}), 'http://myth-hair.frog.tw');
+      $("#Modal_PhotoCrop").modal('hide');
     }, 
     function(error) {
       document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Failed'}), 'http://myth-hair.frog.tw');
       alert("上傳照片失敗: " + error.code);
+      $("#Modal_PhotoCrop").modal('hide');
     }, options
   );
+  alert("EE");
 }
 function removePhoto() {
   $.post('http://myth-hair.frog.tw/photo_remove.php', {Role: $("#PhotoCropRole").val()}, function(data, status){
