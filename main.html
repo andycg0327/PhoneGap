@@ -157,12 +157,12 @@ function getPhoto(source) {
   );
 }
 function CropSubmit() {
+  alert($("#PhotoCropbox").attr('src'));
   var options = new FileUploadOptions();
   options.fileKey = "file";
   options.fileName = $("#PhotoCropbox").attr('src').substr($("#PhotoCropbox").attr('src').lastIndexOf('/') + 1);
-  alert("AA");
+  alert(options.fileName);
   options.mimeType = "image/jpeg";
-  alert("AA");
   options.params = {
     Role: $('#PhotoCropRole').val(),
     CropX: $('#PhotoCropX').val(),
@@ -170,10 +170,8 @@ function CropSubmit() {
     CropW: $('#PhotoCropW').val(),
     CropH: $('#PhotoCropH').val()
   }
-  alert("BB");
 
   var ft = new FileTransfer();
-  alert("CC");
   ft.onprogress = function(progressEvent) {
     if (progressEvent.lengthComputable) {
       $("#progressbar").width(progressEvent.loaded / progressEvent.total).removeClass('collapse');
@@ -181,7 +179,7 @@ function CropSubmit() {
       $("#progressbar").addClass('collapse');
     }
   };
-  alert("DD");
+  alert($("#PhotoCropbox").attr('src'));
   ft.upload($("#PhotoCropbox").attr('src'), encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
     function(r) {
       document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Done'}), 'http://myth-hair.frog.tw');
