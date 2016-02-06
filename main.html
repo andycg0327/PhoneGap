@@ -111,9 +111,12 @@ function getPhoto(source, role) {
     function(imageURI) {
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
-          alert(localFileUri);
+          imageURI = "file://" + localFileUri;
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
-          alert(fileEntry);imageURI = fileEntry;});
+            alert(fileEntry.name);
+            alert(fileEntry.fullPath);
+            alert(fileEntry.toURL());
+          });
         });
       }
       var options = new FileUploadOptions();
