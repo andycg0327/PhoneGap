@@ -109,26 +109,26 @@ function FBLoginSubmit(Type, Role) {
 function getPhoto(source, role) {
   navigator.camera.getPicture(
     function(imageURI) {
+      var actualURI = imageURI;
+      alert(actualURI);
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
-          imageURI = "file://" + localFileUri;
+          actualURI = "file://" + localFileUri;
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
-            alert(fileEntry.name);
-            alert(fileEntry.fullPath);
-            alert(fileEntry.toURL());
           });
         });
       }
+      alert(actualURI);
       var options = new FileUploadOptions();
       options.fileKey = "file";
-      options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+      options.fileName = "Photo.jpg";
       options.mimeType = "image/jpeg";
       options.params = {Role: role}
 
       var ft = new FileTransfer();
-      ft.upload(imageURI, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
+      ft.upload(actualURI, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
         function(r) {
-          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role, Type: imageURI.substr(imageURI.lastIndexOf('.') + 1)}), 'http://myth-hair.frog.tw');
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role}), 'http://myth-hair.frog.tw');
         }, 
         function(error) {
           alert("上傳照片失敗: " + error.code);
