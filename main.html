@@ -44,17 +44,17 @@ var app = {
       case "onReLogin":
         window.plugins.spinnerDialog.show(null, null, true);
         if(localStorage.Account && localStorage.Password) {
-          LoginSubmit('Login');
-        } else if(localStorage.FacebookID)
-          FBLoginSubmit('Login', '');
-        else
-          window.location = "./index.html";
+          if(!LoginSubmit('Login'))
+            window.location = "./index.html";
+        } else if(localStorage.FacebookID) {
+          if(!FBLoginSubmit('Login', ''))
+            window.location = "./index.html";
+        }
         window.plugins.spinnerDialog.hide();
         break;
       case "onFBConnect":
         window.plugins.spinnerDialog.show(null, null, true);
-        if(FBLoginSubmit('Connect', data.Role))
-          e.source.postMessage(e.data, e.origin);
+        e.source.postMessage(JSON.stringify({Title: "onFBConnect", Status: FBLoginSubmit('Connect', data.Role) ? 'OK' : 'Failed'}), e.origin);
         window.plugins.spinnerDialog.hide();
         break;
       case "onFBOpen":
@@ -62,9 +62,7 @@ var app = {
         break;
       case "onNewPhoto":
         $("#PhotoCropRole").val(data.Role);
-        $("#PhotoCropOID").val(data.OID);
-        $("#Modal_NewPhoto").modal('show');
-        $('#Modal_NewPhoto .modal-dialog').css('margin-top', $('#Modal_NewPhoto').height() / 2.5);
+        $("#Selection_NewPhoto").css('display', 'table').animate({'opacity': '1'}, 300);
         break;
       }
     }, false);
@@ -72,31 +70,29 @@ var app = {
 };
 app.initialize();
 
-var backbutton = false;
-function onBackKeyDown() {
-  if(backbutton)
-    (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
-  else {
-    document.getElementById('iframe').contentWindow.postMessage("onBackKeyDown", 'http://myth-hair.frog.tw');
-  }
-}
-
-var cropBox;
 $(document).ready(function(){
-  initJcrop();
   $("#Modal_PhotoCrop").on('shown.bs.modal', function () {
     $("#Div_PhotoCrop").height($("#Div_PhotoCrop").height() + $(window).height() - $("#Modal_PhotoCrop .modal-dialog").height());
     cropBox.destroy();
     initJcrop();
     $(".jcrop-holder").css('top', 'calc(50% - ' + $(".jcrop-holder").height()/2 + 'px)').css('left', 'calc(50% - ' + $(".jcrop-holder").width()/2 + 'px)');
   });
+  initJcrop();
 });
 
-// Normal login
+var backbutton = false;
+function onBackKeyDown() {
+  if(backbutton)
+    (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
+  else {
+    document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBackKeyDown"}), 'http://myth-hair.frog.tw');
+  }
+}
+
 function LoginSubmit(Type) {
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Account: localStorage.Account, Password: localStorage.Password, RegistrationID: localStorage.RegistrationID}, function(data, status){
-    if(status == "success" && data != "OK")
-      window.location = "./index.html";
+    if(status == "success")
+      return data == "OK";
   });
 }
 function FBLoginSubmit(Type, Role) {
@@ -105,25 +101,23 @@ function FBLoginSubmit(Type, Role) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
-            if(status == "success" && data == "OK")
-              return true;
+            if(status == "success")
+              return data == "OK";
           });
         }, function(err) {
         });
       }
-			else if (response.status === 'not_authorized')
-				alert('Facebook 登入失敗: 您尚未授權本系統。');
-			else
-				alert('Facebook 登入失敗: 您尚未登入Facebook。');
+      else if (response.status === 'not_authorized')
+        alert('Facebook 登入失敗: 您尚未授權本系統。');
+      else
+        alert('Facebook 登入失敗: 您尚未登入Facebook。');
     },
-    function (error) {
-    }
+    function (error) {}
   );
-  if(Type == "Login")
-    window.location = "./index.html";
   return false;
 }
 
+var cropBox;
 function initJcrop() {
   $('#PhotoCropbox').Jcrop({
     boxWidth: $("#Div_PhotoCrop").width(),
@@ -147,21 +141,24 @@ function updateCoords(c) {
   $('#PhotoCropH').val(c.h);
 };
 function getPhoto(source) {
+  $("#Selection_NewPhoto").animate({'opacity': '0'}, 300).hide();
   navigator.camera.getPicture(
     function(imageURI) {
       $("#PhotoCropbox").attr('src', imageURI);
       $("#Modal_PhotoCrop").modal({backdrop: "static"});
     }, function(message) {
       alert('讀取照片失敗: ' + message);
-    }, { quality: 80, sourceType: source }
+    }, { quality: 80, destinationType: Camera.DestinationType.FILE_URI, sourceType: source }
   );
 }
 function CropSubmit() {
+  window.plugins.spinnerDialog.show(null, null, true);
+  $("#BtnCropSubmit").hide();
+  $("#progressbar").collapse("show");
   alert($("#PhotoCropbox").attr('src'));
   var options = new FileUploadOptions();
   options.fileKey = "file";
   options.fileName = $("#PhotoCropbox").attr('src').substr($("#PhotoCropbox").attr('src').lastIndexOf('/') + 1);
-  alert(options.fileName);
   options.mimeType = "image/jpeg";
   options.params = {
     Role: $('#PhotoCropRole').val(),
@@ -179,21 +176,22 @@ function CropSubmit() {
       $("#progressbar").addClass('collapse');
     }
   };
-  alert($("#PhotoCropbox").attr('src'));
   ft.upload($("#PhotoCropbox").attr('src'), encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
     function(r) {
       document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Done'}), 'http://myth-hair.frog.tw');
-      $("#Modal_PhotoCrop").modal('hide');
     }, 
     function(error) {
       document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Failed'}), 'http://myth-hair.frog.tw');
       alert("上傳照片失敗: " + error.code);
-      $("#Modal_PhotoCrop").modal('hide');
     }, options
   );
-  alert("EE");
+  $("#Modal_PhotoCrop").modal('hide');
+  $("#BtnCropSubmit").show();
+  $("#progressbar").collapse("hide");
+  window.plugins.spinnerDialog.hide();
 }
 function removePhoto() {
+  $("#Selection_NewPhoto").animate({'opacity': '0'}, 300).hide();
   $.post('http://myth-hair.frog.tw/photo_remove.php', {Role: $("#PhotoCropRole").val()}, function(data, status){
     if(status == "success")
       document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Status: 'Removed'}), 'http://myth-hair.frog.tw');
@@ -214,19 +212,32 @@ iframe {
   border: 0;
   vertical-align:bottom;
 }
+.selection {
+  position:absolute;
+  background-color:rgba(0,0,0,0.6);
+  color:#FFFFFF;
+  display: none;
+  padding: 10px;
+  width:100%;
+  height:100%;
+  opacity: 0;
+}
+.selection-line {
+  display: table-cell;
+  vertical-align: middle;
+}
+.selection-line .list-group {
+  margin: 0;
+}
 </style>
 
 <body>
-<div id="Modal_NewPhoto" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="padding:0">
-        <div class="list-group" style="margin:0">
-          <a href="#" class="list-group-item" onclick="getPhoto(Camera.PictureSourceType.CAMERA)">拍攝新照片</a>
-          <a href="#" class="list-group-item" onclick="getPhoto(Camera.PictureSourceType.PHOTOLIBRARY)">從圖庫挑選</a>
-          <a href="#" class="list-group-item" onclick="removePhoto()">移除頭像</a>
-        </div>
-      </div>
+<div id="Selection_NewPhoto" class="selection">
+  <div class="selection-line">
+    <div class="list-group">
+      <a href="#" class="list-group-item" onclick="getPhoto(Camera.PictureSourceType.CAMERA)">拍攝新照片</a>
+      <a href="#" class="list-group-item" onclick="getPhoto(Camera.PictureSourceType.PHOTOLIBRARY)">從圖庫挑選</a>
+      <a href="#" class="list-group-item" onclick="removePhoto()">移除頭像</a>
     </div>
   </div>
 </div>
@@ -240,17 +251,16 @@ iframe {
       <div class="modal-body" id="Div_PhotoCrop" style="padding:0">
         <img id="PhotoCropbox">
         <input type="hidden" id="PhotoCropRole" name="Role" />
-        <input type="hidden" id="PhotoCropOID" name="OID" />
         <input type="hidden" id="PhotoCropX" name="CropX" />
         <input type="hidden" id="PhotoCropY" name="CropY" />
         <input type="hidden" id="PhotoCropW" name="CropW" />
         <input type="hidden" id="PhotoCropH" name="CropH" />
+      </div>
+      <div class="modal-footer">
         <div class="progress collapse" style="margin:0">
           <div id="progressbar" class="progress-bar progress-bar-striped active" role="progressbar" style="width:0%"></div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" onClick="CropSubmit()">裁切</button>
+        <button type="button" id="BtnCropSubmit" class="btn btn-default" onClick="CropSubmit()">裁切</button>
       </div>
       </form>
     </div>
