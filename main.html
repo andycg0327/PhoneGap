@@ -90,9 +90,6 @@ $(document).ready(function(){
     initJcrop();
     $(".jcrop-holder").css('top', 'calc(50% - ' + $(".jcrop-holder").height()/2 + 'px)').css('left', 'calc(50% - ' + $(".jcrop-holder").width()/2 + 'px)');
   });
-  $("#Modal_PhotoCrop").modal({backdrop: "static"});
-  
-  $("#PhotoCropbox").attr('src', "file:///C:/Users/Cheng-Ting/Pictures/cc.jpg");
 });
 
 // Normal login
@@ -162,9 +159,13 @@ function getPhoto(source) {
 function CropSubmit() {
   alert("AA");
   var options = new FileUploadOptions();
+  alert("AA");
   options.fileKey = "file";
+  alert("AA");
   options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+  alert("AA");
   options.mimeType = "image/jpeg";
+  alert("AA");
   options.params = {
     Role: $('#PhotoCropRole').val(),
     CropX: $('#PhotoCropX').val(),
