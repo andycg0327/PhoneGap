@@ -144,37 +144,6 @@ function getPhoto(source) {
   $("#Selection_NewPhoto").animate({'opacity': '0'}, 300).hide();
   navigator.camera.getPicture(
     function(imageURI) {
-      if (imageURI.startsWith("content://")) {
-        window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
-          alert(localFileUri);
-          imageURI = localFileUri;
-          window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
-          alert(fileEntry);});
-        });
-      }
-      var options = new FileUploadOptions();
-      options.fileKey = "file";
-      options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-      options.mimeType = "image/jpeg";
-      options.params = {Role: role}
-
-      var ft = new FileTransfer();
-      ft.upload(imageURI, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
-        function(r) {
-          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role, Type: imageURI.substr(imageURI.lastIndexOf('.') + 1)}), 'http://myth-hair.frog.tw');
-        }, 
-        function(error) {
-          alert("上傳照片失敗: " + error.code);
-        }, options
-      );
-    }, function(message) {
-      alert('讀取照片失敗: ' + message);
-    }, { quality: 90, sourceType: source }
-  );
-}
-function getPhoto2(source, role) {
-  navigator.camera.getPicture(
-    function(imageURI) {
       alert("A");
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
