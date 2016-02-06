@@ -114,10 +114,10 @@ function getPhoto(source, role) {
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
       alert(localFileUri);
-          actualURI = "file:///" + localFileUri;
+          actualURI = "file://" + localFileUri;
       alert(actualURI);
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
-          actualURI = "file:///" + fileEntry.fullPath;
+          actualURI = "file://" + fileEntry.fullPath;
       alert(actualURI);
           });
         });
