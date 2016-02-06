@@ -111,7 +111,7 @@ function getPhoto(source, role) {
     function(imageURI) {
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
-          imageURI = fileEntry;
+          imageURI = "file://" + localFileUri;
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
             alert(fileEntry.name);
             alert(fileEntry.fullPath);
