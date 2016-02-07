@@ -51,9 +51,8 @@ var app = {
         window.plugins.spinnerDialog.hide();
         break;
       case "onFBConnect":
-        window.plugins.spinnerDialog.show(null, null, true);
-        e.source.postMessage(JSON.stringify({Title: "onFBConnect", Status: FBLoginSubmit('Connect', data.Role) ? 'OK' : 'Failed'}), e.origin);
-        window.plugins.spinnerDialog.hide();
+        if(FBLoginSubmit('Connect', data.Role))
+          e.source.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), e.origin);
         break;
       case "onFBOpen":
         window.open('fb://' + data.URL, '_system', 'location=no');
@@ -90,8 +89,11 @@ function FBLoginSubmit(Type, Role) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
-            if(status == "success")
+            if(status == "success") {
+              alert(data);
+              alert(data == "OK");
               return data == "OK";
+            }
           });
         }, function(err) {
         });
@@ -110,19 +112,14 @@ function getPhoto(source, role) {
   navigator.camera.getPicture(
     function(imageURI) {
       var actualURL = imageURI;
-      alert(actualURL);
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
-      alert(localFileUri);
           actualURL = "file://" + localFileUri;
-      alert(actualURL);
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
           actualURL = fileEntry.toURL();
-      alert(actualURL);
           });
         });
       }
-      alert(actualURL);
       var options = new FileUploadOptions();
       options.fileKey = "file";
       options.fileName = "photo.jpg";
@@ -130,17 +127,18 @@ function getPhoto(source, role) {
       options.params = {Role: role}
 
       window.plugins.spinnerDialog.show(null, null, true);
-      $("#Modal_Progress").modal({backdrop: "static"});
       var ft = new FileTransfer();
       ft.onprogress = function(progressEvent) {
         if (progressEvent.lengthComputable) {
+          $("#Modal_Progress").modal({backdrop: "static"});
           $("#Modal_Progress .progress-bar").css('width', (progressEvent.loaded / progressEvent.total * 100) + "%");
         } else {
-          $("#Modal_Progress .progress-bar").css('width', "100%");
+          //$("#Modal_Progress .progress-bar").css('width', "100%");
         }
       };
       ft.upload(actualURL, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
         function(r) {
+          window.cache.cleartemp();
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role}), 'http://myth-hair.frog.tw');
           alert(r.response);
           window.plugins.spinnerDialog.hide();
@@ -153,8 +151,8 @@ function getPhoto(source, role) {
         }, options
       );
     }, function(message) {
-      window.plugins.toast.showShortBottom('讀取照片失敗: ' + message);
-    }, { 
+      //window.plugins.toast.showShortBottom('讀取照片失敗: ' + message);
+    }, {
       quality: 80,
       sourceType: source,
       targetWidth: 1000,
