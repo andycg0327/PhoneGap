@@ -117,7 +117,7 @@ function getPhoto(source, role) {
           actualURI = "file://" + localFileUri;
       alert(actualURI);
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
-          actualURI = "file://" + fileEntry.fullPath;
+          actualURI = fileEntry.toURL();
       alert(actualURI);
           });
         });
