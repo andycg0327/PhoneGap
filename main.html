@@ -97,9 +97,9 @@ function FBLoginSubmit(Type, Role) {
         });
       }
       else if (response.status === 'not_authorized')
-        alert('Facebook 登入失敗: 您尚未授權本系統。');
+        window.plugins.toast.showShortBottom('Facebook 登入失敗: 您尚未授權本系統。');
       else
-        alert('Facebook 登入失敗: 您尚未登入Facebook。');
+        window.plugins.toast.showShortBottom('Facebook 登入失敗: 您尚未登入Facebook。');
     },
     function (error) {}
   );
@@ -109,38 +109,58 @@ function FBLoginSubmit(Type, Role) {
 function getPhoto(source, role) {
   navigator.camera.getPicture(
     function(imageURI) {
-      var actualURI = imageURI;
-      alert(actualURI);
+      var actualURL = imageURI;
+      alert(actualURL);
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
       alert(localFileUri);
-          actualURI = "file://" + localFileUri;
-      alert(actualURI);
+          actualURL = "file://" + localFileUri;
+      alert(actualURL);
           window.resolveLocalFileSystemURL("file://" + localFileUri, function(fileEntry) {
-          actualURI = fileEntry.toURL();
-      alert(actualURI);
+          actualURL = fileEntry.toURL();
+      alert(actualURL);
           });
         });
       }
-      alert(actualURI);
+      alert(actualURL);
       var options = new FileUploadOptions();
       options.fileKey = "file";
       options.fileName = "photo.jpg";
       options.mimeType = "image/jpeg";
       options.params = {Role: role}
 
+      window.plugins.spinnerDialog.show(null, null, true);
+      $("#Modal_Progress").modal({backdrop: "static"});
       var ft = new FileTransfer();
-      ft.upload(actualURI, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
+      ft.onprogress = function(progressEvent) {
+        if (progressEvent.lengthComputable) {
+          $("#Modal_Progress .progress-bar").css('width', (progressEvent.loaded / progressEvent.total * 100) + "%");
+        } else {
+          $("#Modal_Progress .progress-bar").css('width', "100%");
+        }
+      };
+      ft.upload(actualURL, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
         function(r) {
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role}), 'http://myth-hair.frog.tw');
+          alert(r.response);
+          window.plugins.spinnerDialog.hide();
+          $("#Modal_Progress").modal('hide');
         }, 
         function(error) {
-          alert("上傳照片失敗: " + error.code);
+          window.plugins.toast.showShortBottom("上傳照片失敗: " + error.code);
+          window.plugins.spinnerDialog.hide();
+          $("#Modal_Progress").modal('hide');
         }, options
       );
     }, function(message) {
-      alert('讀取照片失敗: ' + message);
-    }, { quality: 80, sourceType: source }
+      window.plugins.toast.showShortBottom('讀取照片失敗: ' + message);
+    }, { 
+      quality: 80,
+      sourceType: source,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      cameraDirection: Camera.Direction.FRONT
+    }
   );
 }
 </script>
@@ -161,6 +181,15 @@ iframe {
 </style>
 
 <body>
+<div id="Modal_Progress" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="progress" style="margin:0">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" style="width:0%"></div>
+        </div>
+    </div>
+  </div>
+</div>
 <iframe id="iframe" src="http://myth-hair.frog.tw/phonegap.php"></iframe>
 </body>
 </html>
