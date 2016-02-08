@@ -39,20 +39,31 @@ var app = {
       case "onSpinnerHide":
         window.plugins.spinnerDialog.hide();
         break;
+      case "onBarcodeScan":
+        cordova.plugins.barcodeScanner.scan(
+          function(result) {
+            if(result.format == "QR_CODE")
+              document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBarcodeScan", Type: data.Type, Result: result.text}), 'http://myth-hair.frog.tw');
+          }, 
+          function(error) {
+            window.plugins.toast.showShortBottom("Scanning failed: " + error);
+          }
+        );
+        break;
       case "onReLogin":
         window.plugins.spinnerDialog.show(null, null, true);
-        if(localStorage.Account && localStorage.Password) {
-          if(!LoginSubmit('Login'))
-            window.location = "./index.html";
-        } else if(localStorage.FacebookID) {
-          if(!FBLoginSubmit('Login', ''))
-            window.location = "./index.html";
+        if((localStorage.Account && localStorage.Password && LoginSubmit('Login')) || (localStorage.FacebookID && FBLoginSubmit('Login', ''))) {
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
+          window.plugins.spinnerDialog.hide();
+          return;
+        } else {
+          window.plugins.spinnerDialog.hide();
+          window.location = "./index.html";
         }
-        window.plugins.spinnerDialog.hide();
         break;
       case "onFBConnect":
         if(FBLoginSubmit('Connect', data.Role))
-          e.source.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), e.origin);
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
         break;
       case "onFBOpen":
         window.open('fb://' + data.URL, '_system', 'location=no');
@@ -90,8 +101,6 @@ function FBLoginSubmit(Type, Role) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success") {
-              alert(data);
-              alert(data == "OK");
               return data == "OK";
             }
           });
@@ -136,11 +145,10 @@ function getPhoto(source, role) {
           //$("#Modal_Progress .progress-bar").css('width', "100%");
         }
       };
-      ft.upload(actualURL, encodeURI("http://myth-hair.frog.tw/phonegap_photo.php"), 
+      ft.upload(actualURL, encodeURI("http://myth-hair.frog.tw/ajax_photoUpload.php"), 
         function(r) {
           window.cache.cleartemp();
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role}), 'http://myth-hair.frog.tw');
-          alert(r.response);
           window.plugins.spinnerDialog.hide();
           $("#Modal_Progress").modal('hide');
         }, 
@@ -151,9 +159,9 @@ function getPhoto(source, role) {
         }, options
       );
     }, function(message) {
-      //window.plugins.toast.showShortBottom('讀取照片失敗: ' + message);
+      window.plugins.toast.showShortBottom('已取消上傳照片');
     }, {
-      quality: 80,
+      quality: 90,
       sourceType: source,
       targetWidth: 1000,
       targetHeight: 1000,
