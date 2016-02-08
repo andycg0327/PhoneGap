@@ -103,7 +103,7 @@ hr {
 </style>
 
 <body>
-<h2 class="text-center">Myth 靚化約定</h2>
+<h2 class="text-center">Myth 靚實生活</h2>
 <div id="Div_Register" class="container collapse in">
 	<div class="row">
 		<div class="col-xs-10 col-xs-offset-1">
@@ -131,7 +131,8 @@ hr {
 			<div class="form-group">
 				<div class="col-xs-12 has-feedback">
           <i class="fa fa-key fa-fw"></i>
-					<input type="password" class="form-control input-sm" name="Password" placeholder="密碼" required />
+					<input type="password" class="form-control input-sm" name="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
+          <div class="help-block with-errors"></div>
 				</div>
 			</div>
 			<div class="form-group">
@@ -151,7 +152,7 @@ hr {
           <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
         </div>
       </div>
-			<p class="text-center"><button type="button" class="btn btn-link" onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</button></p>
+			<p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</button></p>
 			</form>
 		</div>
 	</div>
@@ -172,7 +173,8 @@ hr {
 			<div class="form-group">
 				<div class="col-xs-12 has-feedback">
           <i class="fa fa-key fa-fw"></i>
-					<input type="password" class="form-control input-sm" name="Password" id="Password" placeholder="密碼" required />
+					<input type="password" class="form-control input-sm" name="Password" id="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
+          <div class="help-block with-errors"></div>
 				</div>
 			</div>
       <div class="form-group text-center">
@@ -187,7 +189,7 @@ hr {
         </div>
       </div>
 			<div id="Alert_Login"></div>
-			<p class="text-center"><button type="button" class="btn btn-link" onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</button></p>
+			<p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</button></p>
 			</form>
 		</div>
 	</div>

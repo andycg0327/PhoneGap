@@ -62,8 +62,10 @@ var app = {
         }
         break;
       case "onFBConnect":
-        if(FBLoginSubmit('Connect', data.Role))
+        if(FBLoginSubmit('Connect', data.Role)) {
+          alert(data.Role);
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
+        }
         break;
       case "onFBOpen":
         window.open('fb://' + data.URL, '_system', 'location=no');
@@ -101,6 +103,7 @@ function FBLoginSubmit(Type, Role) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success") {
+              alert(data);
               return data == "OK";
             }
           });
@@ -161,7 +164,7 @@ function getPhoto(source, role) {
     }, function(message) {
       window.plugins.toast.showShortBottom('已取消上傳照片');
     }, {
-      quality: 90,
+      quality: 80,
       sourceType: source,
       targetWidth: 1000,
       targetHeight: 1000,
