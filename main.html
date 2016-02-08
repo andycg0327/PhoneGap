@@ -103,8 +103,8 @@ function FBLoginSubmit(Type, Role) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success") {
-              alert(data);
-              return data == "OK";
+              if(data == "OK")
+                return true;
             }
           });
         }, function(err) {
@@ -133,7 +133,7 @@ function getPhoto(source, role) {
         });
       }
       var options = new FileUploadOptions();
-      options.fileKey = "file";
+      options.fileKey = "Upload";
       options.fileName = "photo.jpg";
       options.mimeType = "image/jpeg";
       options.params = {Role: role}
@@ -164,7 +164,7 @@ function getPhoto(source, role) {
     }, function(message) {
       window.plugins.toast.showShortBottom('已取消上傳照片');
     }, {
-      quality: 70,
+      quality: 90,
       sourceType: source,
       targetWidth: 1000,
       targetHeight: 1000,
