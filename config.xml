@@ -48,7 +48,7 @@
   <plugin name="cordova-plugin-x-toast" spec="2.4.0"/>
   <plugin name="cordova-plugin-filepath" spec="1.0.0"/>
   <plugin name="cordova-plugin-cache" spec="1.0.5"/>
-  <plugin name="com.phonegap.plugins.barcodescanner" spec="2.2.0" source="pgb" />
+  <plugin name="com.phonegap.plugins.barcodescanner" source="pgb" />
   <plugin name="hu.dpal.phonegap.plugins.spinnerdialog" spec="1.2.0" source="pgb" />
   <icon src="icon.png"/>
   <icon src="res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
