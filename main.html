@@ -70,10 +70,7 @@ var app = {
         window.open('fb://' + data.URL, '_system', 'location=no');
         break;
       case "onNewPicture":
-        if(data.SourceType == "CAMERA")
-          getPhoto(Camera.PictureSourceType.CAMERA, data.Role);
-        else if(data.SourceType == "PHOTOLIBRARY")
-          getPhoto(Camera.PictureSourceType.PHOTOLIBRARY, data.Role);
+        getPhoto(data);
         break;
       }
     }, false);
@@ -120,7 +117,13 @@ function FBLoginSubmit(Type, Role) {
   return success;
 }
 
-function getPhoto(source, role) {
+function getPhoto(data) {
+  var source;
+  if(data.SourceType == "CAMERA")
+    source = Camera.PictureSourceType.CAMERA;
+  else if(data.SourceType == "PHOTOLIBRARY")
+    source = Camera.PictureSourceType.PHOTOLIBRARY;
+    
   navigator.camera.getPicture(
     function(imageURI) {
       var actualURL = imageURI;
@@ -136,7 +139,10 @@ function getPhoto(source, role) {
       options.fileKey = "Upload";
       options.fileName = "photo.jpg";
       options.mimeType = "image/jpeg";
-      options.params = {Role: role}
+      if(data.Role == "Activity")
+        options.params = {OID: data.OID}
+      else
+        options.params = {Role: data.Role}
 
       window.plugins.spinnerDialog.show(null, null, true);
       var ft = new FileTransfer();
@@ -148,10 +154,10 @@ function getPhoto(source, role) {
           //$("#Modal_Progress .progress-bar").css('width', "100%");
         }
       };
-      ft.upload(actualURL, encodeURI(role == "Activity" ? "http://myth-hair.frog.tw/ajax_DMUpload.php" : "http://myth-hair.frog.tw/ajax_photoUpload.php"), 
+      ft.upload(actualURL, encodeURI(data.Role == "Activity" ? "http://myth-hair.frog.tw/ajax_DMUpload.php" : "http://myth-hair.frog.tw/ajax_photoUpload.php"), 
         function(r) {
           window.cache.cleartemp();
-          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPicture', Role: role}), 'http://myth-hair.frog.tw');
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPicture', Role: data.Role}), 'http://myth-hair.frog.tw');
           window.plugins.spinnerDialog.hide();
           $("#Modal_Progress").modal('hide');
         }, 
