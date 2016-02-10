@@ -1,6 +1,6 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.phonegap.mythhair" version="1.0.0">
-  <name>靚實生活</name>
-  <description>Cloud reservation platform for every studio and customer.</description>
+  <name>時尚羅盤</name>
+  <description>Cloud reservation platform for studios and customers.</description>
   <author href="http://myth-hair.frog.tw/" email="andycg0327@hotmail.com">Myth International</author>
   <content src="index.html"/>
   <preference name="phonegap-version" value="cli-5.2.0" />

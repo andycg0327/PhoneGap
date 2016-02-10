@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Myth 靚化約定</title>
+<title>Myth 時尚羅盤</title>
 <meta charset="utf-8" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="msapplication-tap-highlight" content="no" />
@@ -63,14 +63,13 @@ var app = {
         break;
       case "onFBConnect":
         if(FBLoginSubmit('Connect', data.Role)) {
-          alert(data.Role);
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
         }
         break;
       case "onFBOpen":
         window.open('fb://' + data.URL, '_system', 'location=no');
         break;
-      case "onNewPhoto":
+      case "onNewPicture":
         if(data.SourceType == "CAMERA")
           getPhoto(Camera.PictureSourceType.CAMERA, data.Role);
         else if(data.SourceType == "PHOTOLIBRARY")
@@ -91,21 +90,22 @@ function onBackKeyDown() {
 }
 
 function LoginSubmit(Type) {
+  var success = false;
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Account: localStorage.Account, Password: localStorage.Password, RegistrationID: localStorage.RegistrationID}, function(data, status){
     if(status == "success")
-      return data == "OK";
+      success = data == "OK";
   });
+  return success;
 }
 function FBLoginSubmit(Type, Role) {
+  var success = false;
   facebookConnectPlugin.login(["public_profile", "email"],
     function (response) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
-            if(status == "success") {
-              if(data == "OK")
-                return true;
-            }
+            if(status == "success")
+              success = data == "OK";
           });
         }, function(err) {
         });
@@ -117,7 +117,7 @@ function FBLoginSubmit(Type, Role) {
     },
     function (error) {}
   );
-  return false;
+  return success;
 }
 
 function getPhoto(source, role) {
@@ -148,10 +148,10 @@ function getPhoto(source, role) {
           //$("#Modal_Progress .progress-bar").css('width', "100%");
         }
       };
-      ft.upload(actualURL, encodeURI("http://myth-hair.frog.tw/ajax_photoUpload.php"), 
+      ft.upload(actualURL, encodeURI(role == "Activity" ? "http://myth-hair.frog.tw/ajax_DMUpload.php" : "http://myth-hair.frog.tw/ajax_photoUpload.php"), 
         function(r) {
           window.cache.cleartemp();
-          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPhoto', Role: role}), 'http://myth-hair.frog.tw');
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: 'onNewPicture', Role: role}), 'http://myth-hair.frog.tw');
           window.plugins.spinnerDialog.hide();
           $("#Modal_Progress").modal('hide');
         }, 
