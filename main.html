@@ -52,14 +52,17 @@ var app = {
         break;
       case "onReLogin":
         window.plugins.spinnerDialog.show(null, null, true);
-        var success = false;
+        
         alert(localStorage.Account);
         alert(localStorage.Password);
         alert(localStorage.FacebookID);
-        if(localStorage.Account && localStorage.Password)
-          success = LoginSubmit('Login');
-        else if(localStorage.FacebookID)
-          success = FBLoginSubmit('Login', '');
+        if(localStorage.Account && localStorage.Password) {
+          alert("LoginSubmit('Login');");
+          LoginSubmit('Login');
+        } else if(localStorage.FacebookID) {
+          alert("FBLoginSubmit('Login', '');");
+          FBLoginSubmit('Login', '');
+        }
           
         /*window.plugins.spinnerDialog.hide();
         if(success)
