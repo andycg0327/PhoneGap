@@ -127,6 +127,7 @@ function onBackKeyDown() {
 function LoginSubmit(Type, reload) {
   window.plugins.spinnerDialog.show(null, null, true);
   $.post('http://myth-hair.frog.tw/login.php', $("#Form_" + Type).serialize(), function(data, status){
+  alert($("#Form_" + Type).serialize());
     if(status == "success" && data == "OK") {
       localStorage.Account = $("#Account").val();
       localStorage.Password = $("#Password").val();
@@ -153,6 +154,7 @@ function FBLoginSubmit(Type, reload, Role) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $("input[name=AccessToken]").val(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
+  alert($("#Form_" + Type).serialize());
             if(status == "success" && data == "OK") {
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
