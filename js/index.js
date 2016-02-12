@@ -44,10 +44,8 @@ var app = {
         localStorage.removeItem("Account");
         localStorage.removeItem("Password");
         localStorage.removeItem("FacebookID");
-        localStorage.removeItem("RegistrationID");
         $("#Page_Main").hide();
         $("#Page_Login").show();
-        //window.location = "./index.html";
         break;
       case "onFBConnect":
         FBLoginSubmit('Connect', data.Role + '_profiles', data.Role);
@@ -119,6 +117,7 @@ function LoginSubmit(Type, Action) {
       $("#Page_Login").hide();
       $("#Page_Main").show();
     } else {
+      window.plugins.toast.showShortBottom(data);
       $("#Page_Main").hide();
       $("#Page_Login").show();
     }
@@ -156,12 +155,15 @@ function FBLoginSubmit(Type, Action, Role) {
             $("#Page_Login").show();
         });
       }
-      else if (response.status === 'not_authorized')
+      else if (response.status === 'not_authorized') {
         window.plugins.toast.showShortBottom('您尚未授權本系統');
-      else
+        $("#Page_Main").hide();
+        $("#Page_Login").show();
+      } else {
         window.plugins.toast.showShortBottom('您尚未登入Facebook');
-      $("#Page_Main").hide();
-      $("#Page_Login").show();
+        $("#Page_Main").hide();
+        $("#Page_Login").show();
+      }
     },
     function (error) {
       window.plugins.toast.showShortBottom(error);
