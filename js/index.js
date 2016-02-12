@@ -42,13 +42,17 @@ var app = {
         var login = false;
         if(localStorage.Account && localStorage.Password) {
           //alert("LoginSubmit('Login');");
-          login = LoginSubmit('Login');
+          login = LoginSubmit('Login', false);
         } else if(localStorage.FacebookID) {
           //alert("FBLoginSubmit('Login', '');");
-          login = FBLoginSubmit('Login', '');
+          login = FBLoginSubmit('Login', false, '');
         }
         if(login)
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
+        else {
+          $("#Page_Main").hide();
+          $("#Page_Login").show();
+        }
           
         /*window.plugins.spinnerDialog.hide();
         if(success)
@@ -66,7 +70,7 @@ var app = {
         //window.location = "./index.html";
         break;
       case "onFBConnect":
-        if(FBLoginSubmit('Connect', data.Role))
+        if(FBLoginSubmit('Connect', false, data.Role))
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
         break;
       case "onFBOpen":
@@ -86,15 +90,12 @@ var app = {
     push.on('registration', function(data) {
       localStorage.RegistrationID = data.registrationId;
       $("input[name=RegistrationID]").val(data.registrationId);
-      var login = false;
       if(localStorage.Account && localStorage.Password) {
         $("#Account").val(localStorage.Account);
         $("#Password").val(localStorage.Password);
-        login = LoginSubmit('Login');
+        LoginSubmit('Login', true);
       } else if(localStorage.FacebookID)
-        login = FBLoginSubmit('Login', '');
-      if(login)
-        document.getElementById('iframe').contentWindow.location.reload(true);
+        FBLoginSubmit('Login', true, '');
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
@@ -106,14 +107,12 @@ app.initialize();
 $(document).ready(function(){
   $("#iframe").height($(window).height());
   $('#Form_Register').validator().on('submit', function (e) {
-    if (!e.isDefaultPrevented()) {
-      LoginSubmit('Register');
-    }
+    if (!e.isDefaultPrevented())
+      LoginSubmit('Register', true);
   })
   $('#Form_Login').validator().on('submit', function (e) {
-    if (!e.isDefaultPrevented()) {
-      LoginSubmit('Login');
-    }
+    if (!e.isDefaultPrevented())
+      LoginSubmit('Login', true);
   })
 });
 
@@ -125,14 +124,15 @@ function onBackKeyDown() {
     document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBackKeyDown"}), 'http://myth-hair.frog.tw');
 }
 
-function LoginSubmit(Type) {
+function LoginSubmit(Type, reload) {
   window.plugins.spinnerDialog.show(null, null, true);
   $.post('http://myth-hair.frog.tw/login.php', $("#Form_" + Type).serialize(), function(data, status){
     if(status == "success" && data == "OK") {
       localStorage.Account = $("#Account").val();
       localStorage.Password = $("#Password").val();
       localStorage.removeItem("FacebookID");
-      document.getElementById('iframe').contentWindow.location.reload(true);
+      if(reload)
+        document.getElementById('iframe').contentWindow.location.reload(true);
       $("#Page_Login").hide();
       $("#Page_Main").show();
       //window.location = "./main.html";
@@ -146,7 +146,7 @@ function LoginSubmit(Type) {
   return false;
 }
 
-function FBLoginSubmit(Type, Role) {
+function FBLoginSubmit(Type, reload, Role) {
   facebookConnectPlugin.login(["public_profile", "email"],
     function (response) {
       if (response.status === 'connected') {
@@ -157,7 +157,8 @@ function FBLoginSubmit(Type, Role) {
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
               localStorage.removeItem("Password");
-              document.getElementById('iframe').contentWindow.location.reload(true);
+              if(reload)
+                document.getElementById('iframe').contentWindow.location.reload(true);
               $("#Page_Login").hide();
               $("#Page_Main").show();
               //window.location = "./main.html";
