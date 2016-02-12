@@ -6,7 +6,6 @@ var app = {
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
   onDeviceReady: function() {
-    iframe = document.getElementById('iframe');
     var push = PushNotification.init({
       "android": {"senderID": "100971030124", "icon": "icon", "forceShow": "true"},
       "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
@@ -23,7 +22,7 @@ var app = {
       } else if(localStorage.FacebookID)
         login = FBLoginSubmit('Login', '');
       if(login)
-        iframe.contentWindow.location.href = "http://myth-hair.frog.tw/phonegap.php";
+        document.getElementById('iframe').contentWindow.location.reload(true);
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
@@ -71,7 +70,7 @@ var app = {
           login = FBLoginSubmit('Login', '');
         }
         if(login)
-          iframe.contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
           
         /*window.plugins.spinnerDialog.hide();
         if(success)
@@ -104,7 +103,20 @@ var app = {
 };
 app.initialize();
 
-var backbutton = false, iframe;
+$(document).ready(function(){
+  $('#Form_Register').validator().on('submit', function (e) {
+    if (!e.isDefaultPrevented()) {
+      LoginSubmit('Register');
+    }
+  })
+  $('#Form_Login').validator().on('submit', function (e) {
+    if (!e.isDefaultPrevented()) {
+      LoginSubmit('Login');
+    }
+  })
+});
+
+var backbutton = false;
 function onBackKeyDown() {
   if(backbutton)
     (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
@@ -119,7 +131,7 @@ function LoginSubmit(Type) {
       localStorage.Account = $("#Account").val();
       localStorage.Password = $("#Password").val();
       localStorage.removeItem("FacebookID");
-      //document.getElementById('iframe').contentWindow.location.href = "http://myth-hair.frog.tw/phonegap.php";
+      document.getElementById('iframe').contentWindow.location.reload(true);
       $("#Page_Login").hide();
       $("#Page_Main").show();
       //window.location = "./main.html";
@@ -144,7 +156,7 @@ function FBLoginSubmit(Type, Role) {
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
               localStorage.removeItem("Password");
-              //document.getElementById('iframe').contentWindow.location.href = "http://myth-hair.frog.tw/phonegap.php";
+              document.getElementById('iframe').contentWindow.location.reload(true);
               $("#Page_Login").hide();
               $("#Page_Main").show();
               //window.location = "./main.html";
