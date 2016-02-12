@@ -88,10 +88,12 @@ $(document).ready(function(){
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
       LoginSubmit('Register', false);
+    return;
   })
   $('#Form_Login').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
       LoginSubmit('Login', false);
+    return;
   })
 });
 
@@ -142,24 +144,31 @@ function FBLoginSubmit(Type, Action, Role) {
               $("#Page_Login").hide();
               $("#Page_Main").show();
               return;
-            } else
+            } else {
               window.plugins.toast.showShortBottom(data);
+              $("#Page_Main").hide();
+              $("#Page_Login").show();
+            }
           });
         }, function(err) {
             window.plugins.toast.showShortBottom("Could not get access token: " + err);
+            $("#Page_Main").hide();
+            $("#Page_Login").show();
         });
       }
       else if (response.status === 'not_authorized')
         window.plugins.toast.showShortBottom('您尚未授權本系統');
       else
         window.plugins.toast.showShortBottom('您尚未登入Facebook');
+      $("#Page_Main").hide();
+      $("#Page_Login").show();
     },
     function (error) {
       window.plugins.toast.showShortBottom(error);
+      $("#Page_Main").hide();
+      $("#Page_Login").show();
     }
   );
-  $("#Page_Main").hide();
-  $("#Page_Login").show();
 }
 
 function getPhoto(data) {
