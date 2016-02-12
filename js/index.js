@@ -71,8 +71,10 @@ var app = {
         //window.location = "./index.html";
         break;
       case "onFBConnect":
-        if(FBLoginSubmit('Login', false, data.Role))
+        if(FBLoginSubmit('Connect', false, data.Role)) {
+          alert("AA");
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
+        }
         break;
       case "onFBOpen":
         window.open('fb://' + data.URL, '_system', 'location=no');
@@ -155,7 +157,7 @@ function FBLoginSubmit(Type, reload, Role) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
           $("input[name=AccessToken]").val(token);
-          $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
+          $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type == "Connect" ? "Login" : Type).serialize(), function(data, status){
   alert($("#Form_" + Type).serialize());
             if(status == "success" && data == "OK") {
               localStorage.FacebookID = response.authResponse.userID;
