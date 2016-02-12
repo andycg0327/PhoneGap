@@ -1,29 +1,29 @@
 var app = {
-	initialize: function() {
-		this.bindEvents();
-	},
-	bindEvents: function() {
-		document.addEventListener('deviceready', this.onDeviceReady, false);
-	},
-	onDeviceReady: function() {
-		var push = PushNotification.init({
-			"android": {"senderID": "100971030124", "icon": "icon", "forceShow": "true"},
-			"ios": {"alert": "true", "badge": "true", "sound": "true"}, 
-			"windows": {}
-		});
-		push.on('registration', function(data) {
-			localStorage.RegistrationID = data.registrationId;
-			$("input[name=RegistrationID]").val(data.registrationId);
-			if(localStorage.Account && localStorage.Password) {
-				$("#Account").val(localStorage.Account);
-				$("#Password").val(localStorage.Password);
-				LoginSubmit('Login');
-			} else if(localStorage.FacebookID)
-				FBLoginSubmit('Login');
-		}).on('notification', function(data) {
-		}).on('error', function(e) {
-			console.log("push error");
-		});
+  initialize: function() {
+    this.bindEvents();
+  },
+  bindEvents: function() {
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+  },
+  onDeviceReady: function() {
+    var push = PushNotification.init({
+      "android": {"senderID": "100971030124", "icon": "icon", "forceShow": "true"},
+      "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
+      "windows": {}
+    });
+    push.on('registration', function(data) {
+      localStorage.RegistrationID = data.registrationId;
+      $("input[name=RegistrationID]").val(data.registrationId);
+      if(localStorage.Account && localStorage.Password) {
+        $("#Account").val(localStorage.Account);
+        $("#Password").val(localStorage.Password);
+        LoginSubmit('Login');
+      } else if(localStorage.FacebookID)
+        FBLoginSubmit('Login');
+    }).on('notification', function(data) {
+    }).on('error', function(e) {
+      console.log("push error");
+    });
     
     document.addEventListener("backbutton", onBackKeyDown, false);
     
@@ -81,7 +81,9 @@ var app = {
         localStorage.removeItem("Password");
         localStorage.removeItem("FacebookID");
         localStorage.removeItem("RegistrationID");
-        window.location = "./index.html";
+        $("#Page_Main").fadeOut();
+        $("#Page_Login").fadeIn();
+        //window.location = "./index.html";
         break;
       case "onFBConnect":
         alert("ASDF");
@@ -98,7 +100,7 @@ var app = {
         break;
       }
     }, false);
-	}
+  }
 };
 app.initialize();
 
@@ -116,44 +118,48 @@ function LoginSubmit(Type) {
       localStorage.Account = $("#Account").val();
       localStorage.Password = $("#Password").val();
       localStorage.removeItem("FacebookID");
-      window.location = "./main.html";
+      $("#Page_Login").fadeOut();
+      $("#Page_Main").fadeIn();
+      //window.location = "./main.html";
       return true;
     } else
       $("#Alert_" + Type).html(data);
   });
-	return false;
+  return false;
 }
 
 function FBLoginSubmit(Type) {
-	facebookConnectPlugin.login(["public_profile", "email"],
-		function (response) {
-			if (response.status === 'connected') {
-				facebookConnectPlugin.getAccessToken(function(token) {
-					$("input[name=AccessToken]").val(token);
-					$.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
-						if(status == "success" && data == "OK") {
-							localStorage.FacebookID = response.authResponse.userID;
-							localStorage.removeItem("Account");
-							localStorage.removeItem("Password");
-							window.location = "./main.html";
-							return true;
-						} else
-							$("#Alert_" + Type).html(data);
-					});
-				}, function(err) {
-						alert("Could not get access token: " + err);
-				});
-			}
-			else if (response.status === 'not_authorized')
-				$("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未授權本系統。</div>');
-			else
-				$("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未登入Facebook。</div>');
-		},
-		function (error) {
-			alert(error);
-		}
-	);
-	return false;
+  facebookConnectPlugin.login(["public_profile", "email"],
+    function (response) {
+      if (response.status === 'connected') {
+        facebookConnectPlugin.getAccessToken(function(token) {
+          $("input[name=AccessToken]").val(token);
+          $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
+            if(status == "success" && data == "OK") {
+              localStorage.FacebookID = response.authResponse.userID;
+              localStorage.removeItem("Account");
+              localStorage.removeItem("Password");
+              $("#Page_Login").fadeOut();
+              $("#Page_Main").fadeIn();
+              //window.location = "./main.html";
+              return true;
+            } else
+              $("#Alert_" + Type).html(data);
+          });
+        }, function(err) {
+            alert("Could not get access token: " + err);
+        });
+      }
+      else if (response.status === 'not_authorized')
+        $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未授權本系統。</div>');
+      else
+        $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未登入Facebook。</div>');
+    },
+    function (error) {
+      alert(error);
+    }
+  );
+  return false;
 }
 
 function getPhoto(data) {

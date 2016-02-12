@@ -24,102 +24,128 @@
 hr {
   margin: 5px 0 5px 0;
 }
+#Page_Main {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+iframe {
+  height: 100%;
+  width: 100%;
+  border: 0;
+  vertical-align:bottom;
+}
 </style>
 
 <body>
-<h2 class="text-center">Myth 時尚羅盤</h2>
-<div id="Div_Register" class="container collapse in">
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1">
-			<form class="form-horizontal" id="Form_Register" data-toggle="validator" onsubmit="return LoginSubmit('Register')">
-			<input type="hidden" name="Type" value="Register" />
-			<input type="hidden" name="RegistrationID" value="" />
-			<input type="hidden" name="AccessToken" value="" />
-			<div class="form-group">
-        <label class="control-label col-lg-2">我想註冊成:</label>
-				<div class="col-lg-10 has-feedback">
-          <i class="fa fa-users fa-fw"></i>
-					<select class="form-control input-sm" name="Role">
-					<option value="customer">消費者</option>
-					<option value="hairdresser">設計師</option>
-					</select>
-				</div>
-			</div>
-      <hr>
-			<div class="form-group">
-				<div class="col-xs-12 has-feedback">
-          <i class="fa fa-envelope fa-fw"></i>
-					<input type="email" class="form-control input-sm" name="Account" placeholder="Email" required />
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-xs-12 has-feedback">
-          <i class="fa fa-key fa-fw"></i>
-					<input type="password" class="form-control input-sm" name="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
-          <div class="help-block with-errors"></div>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-xs-12 has-feedback">
-          <i class="fa fa-user fa-fw"></i>
-					<input type="text" class="form-control input-sm" name="Name" placeholder="稱呼" required />
-				</div>
-			</div>
-      <div class="form-group text-center">
-        <div class="col-sm-12 has-feedback">
-          <button type="submit" class="btn btn-primary btn-block btn-sm" />註冊</button>
+<div id="Page_Login">
+  <h2 class="text-center">Myth 時尚羅盤</h2>
+  <div id="Div_Register" class="container collapse in">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <form class="form-horizontal" id="Form_Register" data-toggle="validator" onsubmit="return LoginSubmit('Register')">
+        <input type="hidden" name="Type" value="Register" />
+        <input type="hidden" name="RegistrationID" value="" />
+        <input type="hidden" name="AccessToken" value="" />
+        <div class="form-group">
+          <label class="control-label col-lg-2">我想註冊成:</label>
+          <div class="col-lg-10 has-feedback">
+            <i class="fa fa-users fa-fw"></i>
+            <select class="form-control input-sm" name="Role">
+            <option value="customer">消費者</option>
+            <option value="hairdresser">設計師</option>
+            </select>
+          </div>
         </div>
-      </div>
-			<hr />
-      <div class="form-group text-center">
-        <div class="col-sm-12 has-feedback">
-          <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
+        <hr>
+        <div class="form-group">
+          <div class="col-xs-12 has-feedback">
+            <i class="fa fa-envelope fa-fw"></i>
+            <input type="email" class="form-control input-sm" name="Account" placeholder="Email" required />
+          </div>
         </div>
+        <div class="form-group">
+          <div class="col-xs-12 has-feedback">
+            <i class="fa fa-key fa-fw"></i>
+            <input type="password" class="form-control input-sm" name="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12 has-feedback">
+            <i class="fa fa-user fa-fw"></i>
+            <input type="text" class="form-control input-sm" name="Name" placeholder="稱呼" required />
+          </div>
+        </div>
+        <div class="form-group text-center">
+          <div class="col-sm-12 has-feedback">
+            <button type="submit" class="btn btn-primary btn-block btn-sm" />註冊</button>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group text-center">
+          <div class="col-sm-12 has-feedback">
+            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
+          </div>
+        </div>
+        <p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</button></p>
+        </form>
       </div>
-			<p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</button></p>
-			</form>
-		</div>
-	</div>
+    </div>
+  </div>
+  <div id="Div_Login" class="container collapse">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <form class="form-horizontal" id="Form_Login" data-toggle="validator" onsubmit="return LoginSubmit('Login')">
+        <input type="hidden" name="Type" value="Login" />
+        <input type="hidden" name="RegistrationID" value="" />
+        <input type="hidden" name="AccessToken" value="" />
+        <div class="form-group">
+          <div class="col-xs-12 has-feedback">
+            <i class="fa fa-envelope fa-fw"></i>
+            <input type="email" class="form-control input-sm" name="Account" id="Account" placeholder="Email" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12 has-feedback">
+            <i class="fa fa-key fa-fw"></i>
+            <input type="password" class="form-control input-sm" name="Password" id="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+        <div class="form-group text-center">
+          <div class="col-sm-12 has-feedback">
+            <button type="submit" class="btn btn-primary btn-block btn-sm" />登入</button>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group text-center">
+          <div class="col-sm-12 has-feedback">
+            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
+          </div>
+        </div>
+        <div id="Alert_Login"></div>
+        <p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</button></p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <h6 class="text-muted">© 2016 Myth International. All rights reserved.</h6>
+  </footer>
 </div>
-<div id="Div_Login" class="container collapse">
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1">
-			<form class="form-horizontal" id="Form_Login" data-toggle="validator" onsubmit="return LoginSubmit('Login')">
-			<input type="hidden" name="Type" value="Login" />
-			<input type="hidden" name="RegistrationID" value="" />
-			<input type="hidden" name="AccessToken" value="" />
-			<div class="form-group">
-				<div class="col-xs-12 has-feedback">
-          <i class="fa fa-envelope fa-fw"></i>
-					<input type="email" class="form-control input-sm" name="Account" id="Account" placeholder="Email" required />
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-xs-12 has-feedback">
-          <i class="fa fa-key fa-fw"></i>
-					<input type="password" class="form-control input-sm" name="Password" id="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
-          <div class="help-block with-errors"></div>
-				</div>
-			</div>
-      <div class="form-group text-center">
-        <div class="col-sm-12 has-feedback">
-          <button type="submit" class="btn btn-primary btn-block btn-sm" />登入</button>
-        </div>
+
+<div id="Page_Main" style="display:none">
+  <div id="Modal_Progress" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="progress" style="margin:0">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" style="width:0%"></div>
+          </div>
       </div>
-			<hr />
-      <div class="form-group text-center">
-        <div class="col-sm-12 has-feedback">
-          <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
-        </div>
-      </div>
-			<div id="Alert_Login"></div>
-			<p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</button></p>
-			</form>
-		</div>
-	</div>
+    </div>
+  </div>
+  <iframe id="iframe" src="http://myth-hair.frog.tw/phonegap.php"></iframe>
 </div>
-<footer class="footer">
-  <h6 class="text-muted">© 2016 Myth International. All rights reserved.</h6>
-</footer>
 </body>
 </html>
