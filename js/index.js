@@ -71,7 +71,7 @@ var app = {
         //window.location = "./index.html";
         break;
       case "onFBConnect":
-        if(FBLoginSubmit('Connect', false, data.Role))
+        if(FBLoginSubmit('Login', false, data.Role))
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
         break;
       case "onFBOpen":
@@ -174,6 +174,7 @@ function FBLoginSubmit(Type, reload, Role) {
           });
         }, function(err) {
             alert("Could not get access token: " + err);
+  return false;
         });
       }
       else if (response.status === 'not_authorized')
@@ -182,12 +183,13 @@ function FBLoginSubmit(Type, reload, Role) {
       else
         window.plugins.toast.showShortBottom('您尚未登入Facebook');
         //$("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未登入Facebook。</div>');
+  return false;
     },
     function (error) {
       alert(error);
+  return false;
     }
   );
-  return false;
 }
 
 function getPhoto(data) {
