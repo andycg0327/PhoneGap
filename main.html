@@ -52,14 +52,17 @@ var app = {
         break;
       case "onReLogin":
         window.plugins.spinnerDialog.show(null, null, true);
-        if((localStorage.Account && localStorage.Password && LoginSubmit('Login')) || (localStorage.FacebookID && FBLoginSubmit('Login', ''))) {
-          window.plugins.spinnerDialog.hide();
+        var success = false;
+        if(localStorage.Account && localStorage.Password)
+          success = LoginSubmit('Login');
+        else if(localStorage.FacebookID)
+          success = FBLoginSubmit('Login', '');
+          
+        window.plugins.spinnerDialog.hide();
+        if(success)
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
-          return;
-        } else {
-          window.plugins.spinnerDialog.hide();
+        else
           window.location = "./index.html";
-        }
         break;
       case "onLogout":
         localStorage.removeItem("Account");
@@ -99,9 +102,9 @@ function LoginSubmit(Type) {
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Account: localStorage.Account, Password: localStorage.Password, RegistrationID: localStorage.RegistrationID}, function(data, status){
     if(status == "success")
       success = data == "OK";
-      alert(success);
+      alert("LoginSubmit: " + success);
   });
-  alert(success);
+  alert("LoginSubmit: " + success);
   return success;
 }
 function FBLoginSubmit(Type, Role) {
@@ -111,14 +114,15 @@ function FBLoginSubmit(Type, Role) {
               alert("AAA");
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
-              alert(token);
+              alert("FBLoginSubmit: " + token);
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success")
-              alert(data);
+              alert("FBLoginSubmit: " + data);
               success = data == "OK";
-              alert(success);
+              alert("FBLoginSubmit: " + success);
           });
         }, function(err) {
+              alert("FBLoginSubmit: " + err);
         });
       }
       else if (response.status === 'not_authorized')
@@ -128,7 +132,7 @@ function FBLoginSubmit(Type, Role) {
     },
     function (error) {}
   );
-  alert(success);
+  alert("FBLoginSubmit: " + success);
   return success;
 }
 
