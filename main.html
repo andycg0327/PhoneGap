@@ -78,6 +78,7 @@ var app = {
         window.location = "./index.html";
         break;
       case "onFBConnect":
+        alert("ASDF");
         alert(FBLoginSubmit('Connect', data.Role));
         //if(FBLoginSubmit('Connect', data.Role)) {
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
@@ -104,6 +105,7 @@ function onBackKeyDown() {
 }
 
 function LoginSubmit(Type) {
+  alert("123");
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Account: localStorage.Account, Password: localStorage.Password, RegistrationID: localStorage.RegistrationID}, function(data, status){
     if(status == "success") {
       alert("LoginSubmit1: " + data == "OK");
@@ -117,8 +119,10 @@ function LoginSubmit(Type) {
       return false;
     }
   });
+        alert("456");
 }
 function FBLoginSubmit(Type, Role) {
+        alert("789");
   var success = false;
   facebookConnectPlugin.login(["public_profile", "email"],
     function (response) {
