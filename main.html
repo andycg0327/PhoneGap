@@ -61,10 +61,18 @@ var app = {
           window.location = "./index.html";
         }
         break;
+      case "onLogout":
+        localStorage.removeItem("Account");
+        localStorage.removeItem("Password");
+        localStorage.removeItem("FacebookID");
+        localStorage.removeItem("RegistrationID");
+        window.location = "./index.html";
+        break;
       case "onFBConnect":
-        if(FBLoginSubmit('Connect', data.Role)) {
+        alert(FBLoginSubmit('Connect', data.Role));
+        //if(FBLoginSubmit('Connect', data.Role)) {
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
-        }
+        //}
         break;
       case "onFBOpen":
         window.open('fb://' + data.URL, '_system', 'location=no');
@@ -91,7 +99,9 @@ function LoginSubmit(Type) {
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Account: localStorage.Account, Password: localStorage.Password, RegistrationID: localStorage.RegistrationID}, function(data, status){
     if(status == "success")
       success = data == "OK";
+      alert(success);
   });
+  alert(success);
   return success;
 }
 function FBLoginSubmit(Type, Role) {
@@ -102,7 +112,9 @@ function FBLoginSubmit(Type, Role) {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success")
+              alert(data);
               success = data == "OK";
+              alert(success);
           });
         }, function(err) {
         });
@@ -114,6 +126,7 @@ function FBLoginSubmit(Type, Role) {
     },
     function (error) {}
   );
+  alert(success);
   return success;
 }
 
@@ -162,13 +175,13 @@ function getPhoto(data) {
           $("#Modal_Progress").modal('hide');
         }, 
         function(error) {
-          window.plugins.toast.showShortBottom("上傳照片失敗: " + error.code);
+          window.plugins.toast.showShortBottom("上傳失敗: " + error.code);
           window.plugins.spinnerDialog.hide();
           $("#Modal_Progress").modal('hide');
         }, options
       );
     }, function(message) {
-      window.plugins.toast.showShortBottom('已取消上傳照片');
+      window.plugins.toast.showShortBottom('已取消上傳');
     }, {
       quality: 90,
       sourceType: source,
