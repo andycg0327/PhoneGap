@@ -10,7 +10,6 @@ var app = {
     window.addEventListener('message', function(e) {
       if(e.origin != 'http://myth-hair.frog.tw')
         return;
-        
       var data = JSON.parse(e.data);
       switch(data.Title) {
       case "onClose":
@@ -36,17 +35,15 @@ var app = {
         );
         break;
       case "onReLogin":
-        window.plugins.spinnerDialog.show(null, null, true);
-        
         alert(localStorage.Account);
         alert(localStorage.Password);
         alert(localStorage.FacebookID);
         alert(localStorage.RegistrationID);
         if(localStorage.Account && localStorage.Password) {
-          alert("LoginSubmit('Login');");
+          //alert("LoginSubmit('Login');");
           LoginSubmit('Login');
         } else if(localStorage.FacebookID) {
-          alert("FBLoginSubmit('Login', '');");
+          //alert("FBLoginSubmit('Login', '');");
           FBLoginSubmit('Login', '');
         }
           
@@ -61,16 +58,13 @@ var app = {
         localStorage.removeItem("Password");
         localStorage.removeItem("FacebookID");
         localStorage.removeItem("RegistrationID");
-        $("#Page_Main").fadeOut();
-        $("#Page_Login").fadeIn();
+        $("#Page_Main").hide();
+        $("#Page_Login").show();
         //window.location = "./index.html";
         break;
       case "onFBConnect":
-        alert("ASDF");
-        alert(FBLoginSubmit('Connect', data.Role));
-        //if(FBLoginSubmit('Connect', data.Role)) {
+        if(FBLoginSubmit('Connect', data.Role))
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onFBConnect", Role: data.Role}), 'http://myth-hair.frog.tw');
-        //}
         break;
       case "onFBOpen":
         window.open('fb://' + data.URL, '_system', 'location=no');
@@ -112,20 +106,23 @@ function onBackKeyDown() {
 }
 
 function LoginSubmit(Type) {
+  window.plugins.spinnerDialog.show(null, null, true);
   $.post('http://myth-hair.frog.tw/login.php', $("#Form_" + Type).serialize(), function(data, status){
     if(status == "success" && data == "OK") {
-              alert("Login");
       localStorage.Account = $("#Account").val();
       localStorage.Password = $("#Password").val();
       localStorage.removeItem("FacebookID");
-      $("#Page_Login").fadeOut();
-      $("#Page_Main").fadeIn();
+      document.getElementById('iframe').contentWindow.location.href = "http://myth-hair.frog.tw/phonegap.php";
+      $("#Page_Login").hide();
+      $("#Page_Main").show();
       //window.location = "./main.html";
-      return true;
+      //return true;
     } else
-      $("#Alert_" + Type).html(data);
+      window.plugins.toast.showShortBottom(data);
+      //$("#Alert_" + Type).html(data);
   });
-  return false;
+  window.plugins.spinnerDialog.hide();
+  //return false;
 }
 
 function FBLoginSubmit(Type) {
@@ -136,25 +133,28 @@ function FBLoginSubmit(Type) {
           $("input[name=AccessToken]").val(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
             if(status == "success" && data == "OK") {
-              alert("FB");
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
               localStorage.removeItem("Password");
-              $("#Page_Login").fadeOut();
-              $("#Page_Main").fadeIn();
+              document.getElementById('iframe').contentWindow.location.href = "http://myth-hair.frog.tw/phonegap.php";
+              $("#Page_Login").hide();
+              $("#Page_Main").show();
               //window.location = "./main.html";
               return true;
             } else
-              $("#Alert_" + Type).html(data);
+              window.plugins.toast.showShortBottom(data);
+              //$("#Alert_" + Type).html(data);
           });
         }, function(err) {
             alert("Could not get access token: " + err);
         });
       }
       else if (response.status === 'not_authorized')
-        $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未授權本系統。</div>');
+        window.plugins.toast.showShortBottom('您尚未授權本系統');
+        //$("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未授權本系統。</div>');
       else
-        $("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未登入Facebook。</div>');
+        window.plugins.toast.showShortBottom('您尚未登入Facebook');
+        //$("#Alert_" + Type).html('<div class="alert alert-danger fade in"><strong>使用 Facebook 登入失敗!</strong> 您尚未登入Facebook。</div>');
     },
     function (error) {
       alert(error);
