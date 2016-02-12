@@ -53,6 +53,9 @@ var app = {
       case "onReLogin":
         window.plugins.spinnerDialog.show(null, null, true);
         var success = false;
+        alert(localStorage.Account);
+        alert(localStorage.Password);
+        alert(localStorage.FacebookID);
         if(localStorage.Account && localStorage.Password)
           success = LoginSubmit('Login');
         else if(localStorage.FacebookID)
@@ -98,14 +101,15 @@ function onBackKeyDown() {
 }
 
 function LoginSubmit(Type) {
-  var success = false;
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Account: localStorage.Account, Password: localStorage.Password, RegistrationID: localStorage.RegistrationID}, function(data, status){
-    if(status == "success")
-      success = data == "OK";
-      alert("LoginSubmit: " + success);
+    if(status == "success") {
+      alert("LoginSubmit1: " + data == "OK");
+      return data == "OK";
+    } else {
+      alert("LoginSubmit2: " + status);
+      return false;
+    }
   });
-  alert("LoginSubmit: " + success);
-  return success;
 }
 function FBLoginSubmit(Type, Role) {
   var success = false;
@@ -114,10 +118,12 @@ function FBLoginSubmit(Type, Role) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
-            if(status == "success")
+            if(status == "success") {
               alert("FBLoginSubmit: " + data);
               success = data == "OK";
               alert("FBLoginSubmit: " + success);
+              return success;
+            }
           });
         }, function(err) {
               alert("FB getAccessToken: " + err);
