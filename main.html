@@ -53,8 +53,8 @@ var app = {
       case "onReLogin":
         window.plugins.spinnerDialog.show(null, null, true);
         if((localStorage.Account && localStorage.Password && LoginSubmit('Login')) || (localStorage.FacebookID && FBLoginSubmit('Login', ''))) {
-          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
           window.plugins.spinnerDialog.hide();
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
           return;
         } else {
           window.plugins.spinnerDialog.hide();
@@ -108,8 +108,10 @@ function FBLoginSubmit(Type, Role) {
   var success = false;
   facebookConnectPlugin.login(["public_profile", "email"],
     function (response) {
+              alert("AAA");
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
+              alert(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success")
               alert(data);
