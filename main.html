@@ -104,9 +104,13 @@ function LoginSubmit(Type) {
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Account: localStorage.Account, Password: localStorage.Password, RegistrationID: localStorage.RegistrationID}, function(data, status){
     if(status == "success") {
       alert("LoginSubmit1: " + data == "OK");
+      window.plugins.spinnerDialog.hide();
+      document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
       return data == "OK";
     } else {
       alert("LoginSubmit2: " + status);
+      window.plugins.spinnerDialog.hide();
+      window.location = "./index.html";
       return false;
     }
   });
@@ -122,11 +126,15 @@ function FBLoginSubmit(Type, Role) {
               alert("FBLoginSubmit: " + data);
               success = data == "OK";
               alert("FBLoginSubmit: " + success);
+              window.plugins.spinnerDialog.hide();
+              document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
               return success;
             }
           });
-        }, function(err) {
+        }, function(err){
               alert("FB getAccessToken: " + err);
+          window.plugins.spinnerDialog.hide();
+          window.location = "./index.html";
         });
       }
       else if (response.status === 'not_authorized')
@@ -134,10 +142,14 @@ function FBLoginSubmit(Type, Role) {
       else
         window.plugins.toast.showShortBottom('Facebook 登入失敗: 您尚未登入Facebook。');
       alert("FB response: " + success);
+      window.plugins.spinnerDialog.hide();
+      window.location = "./index.html";
       return success;
     },
     function (error) {
       alert("FB error: " + success);
+      window.plugins.spinnerDialog.hide();
+      window.location = "./index.html";
       return success;
     }
   );
