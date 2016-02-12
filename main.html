@@ -111,10 +111,8 @@ function FBLoginSubmit(Type, Role) {
   var success = false;
   facebookConnectPlugin.login(["public_profile", "email"],
     function (response) {
-              alert("AAA");
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
-              alert("FBLoginSubmit: " + token);
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success")
               alert("FBLoginSubmit: " + data);
@@ -122,18 +120,21 @@ function FBLoginSubmit(Type, Role) {
               alert("FBLoginSubmit: " + success);
           });
         }, function(err) {
-              alert("FBLoginSubmit: " + err);
+              alert("FB getAccessToken: " + err);
         });
       }
       else if (response.status === 'not_authorized')
         window.plugins.toast.showShortBottom('Facebook 登入失敗: 您尚未授權本系統。');
       else
         window.plugins.toast.showShortBottom('Facebook 登入失敗: 您尚未登入Facebook。');
+      alert("FB response: " + success);
+      return success;
     },
-    function (error) {}
+    function (error) {
+      alert("FB error: " + success);
+      return success;
+    }
   );
-  alert("FBLoginSubmit: " + success);
-  return success;
 }
 
 function getPhoto(data) {
