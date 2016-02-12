@@ -46,8 +46,6 @@ iframe {
       <div class="col-xs-10 col-xs-offset-1">
         <form class="form-horizontal" id="Form_Register" data-toggle="validator">
         <input type="hidden" name="Type" value="Register" />
-        <input type="hidden" name="RegistrationID" value="" />
-        <input type="hidden" name="AccessToken" value="" />
         <div class="form-group">
           <label class="control-label col-lg-2">我想註冊成:</label>
           <div class="col-lg-10 has-feedback">
@@ -86,10 +84,12 @@ iframe {
         <hr />
         <div class="form-group text-center">
           <div class="col-sm-12 has-feedback">
-            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
+            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register', true, '')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
           </div>
         </div>
         <p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</button></p>
+        <input type="hidden" name="RegistrationID" value="" />
+        <input type="hidden" name="AccessToken" value="" />
         </form>
       </div>
     </div>
@@ -99,8 +99,6 @@ iframe {
       <div class="col-xs-10 col-xs-offset-1">
         <form class="form-horizontal" id="Form_Login" data-toggle="validator">
         <input type="hidden" name="Type" value="Login" />
-        <input type="hidden" name="RegistrationID" value="" />
-        <input type="hidden" name="AccessToken" value="" />
         <div class="form-group">
           <div class="col-xs-12 has-feedback">
             <i class="fa fa-envelope fa-fw"></i>
@@ -122,11 +120,13 @@ iframe {
         <hr />
         <div class="form-group text-center">
           <div class="col-sm-12 has-feedback">
-            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
+            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login', true, '')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
           </div>
         </div>
         <div id="Alert_Login"></div>
         <p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</button></p>
+        <input type="hidden" name="RegistrationID" value="" />
+        <input type="hidden" name="AccessToken" value="" />
         </form>
       </div>
     </div>

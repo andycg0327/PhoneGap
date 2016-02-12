@@ -47,6 +47,7 @@ var app = {
           //alert("FBLoginSubmit('Login', '');");
           login = FBLoginSubmit('Login', false, '');
         }
+        alert(login);
         if(login)
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
         else {
@@ -137,6 +138,7 @@ function LoginSubmit(Type, reload) {
       $("#Page_Login").hide();
       $("#Page_Main").show();
       //window.location = "./main.html";
+              alert("Login:OK");
       window.plugins.spinnerDialog.hide();
       return true;
     } else
@@ -164,6 +166,7 @@ function FBLoginSubmit(Type, reload, Role) {
               $("#Page_Login").hide();
               $("#Page_Main").show();
               //window.location = "./main.html";
+              alert("FB:OK");
               return true;
             } else
               window.plugins.toast.showShortBottom(data);
