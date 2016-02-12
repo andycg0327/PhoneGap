@@ -6,28 +6,6 @@ var app = {
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
   onDeviceReady: function() {
-    var push = PushNotification.init({
-      "android": {"senderID": "100971030124", "icon": "icon", "forceShow": "true"},
-      "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
-      "windows": {}
-    });
-    push.on('registration', function(data) {
-      localStorage.RegistrationID = data.registrationId;
-      $("input[name=RegistrationID]").val(data.registrationId);
-      var login = false;
-      if(localStorage.Account && localStorage.Password) {
-        $("#Account").val(localStorage.Account);
-        $("#Password").val(localStorage.Password);
-        login = LoginSubmit('Login');
-      } else if(localStorage.FacebookID)
-        login = FBLoginSubmit('Login', '');
-      if(login)
-        document.getElementById('iframe').contentWindow.location.reload(true);
-    }).on('notification', function(data) {
-    }).on('error', function(e) {
-      console.log("push error");
-    });
-    
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
       if(e.origin != 'http://myth-hair.frog.tw')
@@ -99,11 +77,34 @@ var app = {
         break;
       }
     }, false);
+    
+    var push = PushNotification.init({
+      "android": {"senderID": "100971030124", "icon": "icon", "forceShow": "true"},
+      "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
+      "windows": {}
+    });
+    push.on('registration', function(data) {
+      localStorage.RegistrationID = data.registrationId;
+      $("input[name=RegistrationID]").val(data.registrationId);
+      var login = false;
+      if(localStorage.Account && localStorage.Password) {
+        $("#Account").val(localStorage.Account);
+        $("#Password").val(localStorage.Password);
+        login = LoginSubmit('Login');
+      } else if(localStorage.FacebookID)
+        login = FBLoginSubmit('Login', '');
+      if(login)
+        document.getElementById('iframe').contentWindow.location.reload(true);
+    }).on('notification', function(data) {
+    }).on('error', function(e) {
+      console.log("push error");
+    });
   }
 };
 app.initialize();
 
 $(document).ready(function(){
+  $("#iframe").height($(window).height());
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented()) {
       LoginSubmit('Register');
