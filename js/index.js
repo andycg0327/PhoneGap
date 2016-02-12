@@ -115,6 +115,7 @@ function onBackKeyDown() {
 function LoginSubmit(Type) {
   $.post('http://myth-hair.frog.tw/login.php', $("#Form_" + Type).serialize(), function(data, status){
     if(status == "success" && data == "OK") {
+              alert("Login");
       localStorage.Account = $("#Account").val();
       localStorage.Password = $("#Password").val();
       localStorage.removeItem("FacebookID");
@@ -136,6 +137,7 @@ function FBLoginSubmit(Type) {
           $("input[name=AccessToken]").val(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + Type).serialize(), function(data, status){
             if(status == "success" && data == "OK") {
+              alert("FB");
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");
               localStorage.removeItem("Password");
