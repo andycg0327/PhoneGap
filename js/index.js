@@ -88,12 +88,12 @@ $(document).ready(function(){
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
       LoginSubmit('Register', false);
-    return;
+    return false;
   })
   $('#Form_Login').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
       LoginSubmit('Login', false);
-    return;
+    return false;
   })
 });
 
@@ -132,7 +132,6 @@ function FBLoginSubmit(Type, Action, Role) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
           $("input[name=AccessToken]").val(token);
-          if(Type == "Connect")
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success" && data == "OK") {
               localStorage.FacebookID = response.authResponse.userID;
