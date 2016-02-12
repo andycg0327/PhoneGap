@@ -61,11 +61,11 @@ var app = {
         else if(localStorage.FacebookID)
           success = FBLoginSubmit('Login', '');
           
-        window.plugins.spinnerDialog.hide();
+        /*window.plugins.spinnerDialog.hide();
         if(success)
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onReLogin", Action: data.Action}), 'http://myth-hair.frog.tw');
         else
-          window.location = "./index.html";
+          window.location = "./index.html";*/
         break;
       case "onLogout":
         localStorage.removeItem("Account");
