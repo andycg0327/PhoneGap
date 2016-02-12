@@ -132,7 +132,8 @@ function FBLoginSubmit(Type, Action, Role) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
           $("input[name=AccessToken]").val(token);
-          $.post('http://myth-hair.frog.tw/loginFB.php', $("#Form_" + (Type == "Connect" ? "Login" : Type)).serialize(), function(data, status){
+          if(Type == "Connect")
+          $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success" && data == "OK") {
               localStorage.FacebookID = response.authResponse.userID;
               localStorage.removeItem("Account");

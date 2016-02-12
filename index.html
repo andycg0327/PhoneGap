@@ -50,7 +50,7 @@ iframe {
           <label class="control-label col-lg-2">我想註冊成:</label>
           <div class="col-lg-10 has-feedback">
             <i class="fa fa-users fa-fw"></i>
-            <select class="form-control input-sm" name="Role">
+            <select class="form-control input-sm" name="Role" id="Role">
             <option value="customer">消費者</option>
             <option value="hairdresser">設計師</option>
             </select>
@@ -84,7 +84,7 @@ iframe {
         <hr />
         <div class="form-group text-center">
           <div class="col-sm-12 has-feedback">
-            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register', false, '')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
+            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register', false, $('#Role').val())"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
           </div>
         </div>
         <p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</button></p>
@@ -120,7 +120,7 @@ iframe {
         <hr />
         <div class="form-group text-center">
           <div class="col-sm-12 has-feedback">
-            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login', false, '')"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
+            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login', false, $('#Role').val())"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
           </div>
         </div>
         <div id="Alert_Login"></div>
