@@ -23,6 +23,9 @@ var app = {
       case "onSpinnerHide":
         window.plugins.spinnerDialog.hide();
         break;
+      case "onToastShow":
+        window.plugins.toast.showShortBottom(data.Message);
+        break;
       case "onBarcodeScan":
         cordova.plugins.barcodeScanner.scan(
           function(result) {
