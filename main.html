@@ -57,6 +57,7 @@ var app = {
         window.plugins.spinnerDialog.hide();
         break;
       case "onToastMessage":
+      alert(data.Message);
         window.plugins.toast.showShortBottom(data.Message);
         break;
       case "onBarcodeScan":
