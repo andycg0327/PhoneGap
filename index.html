@@ -14,6 +14,7 @@
 <script src="./js/jquery.min.js"></script>
 <script src="./bootstrap-3.3.4/js/bootstrap.min.js"></script>
 <script src="./js/bootstrap-validator-0.9.0.min.js"></script>
+<script src="./js/jquery.animate-enhanced.min.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
 <script src="./js/index.js"></script>
 <style>
@@ -25,6 +26,19 @@ html,body {
 }
 hr {
   margin: 5px 0 5px 0;
+}
+#Cover {
+  background-image: url('./img/cover.jpg');
+  background-size: cover;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: 9999;
 }
 #Page_Main {
   height: 100%;
@@ -39,8 +53,17 @@ iframe {
 </style>
 
 <body>
+<div id="Cover" class="text-center">
+  <div style="position:relative">
+    <h2>時尚羅盤</h2>
+    <img src="./img/icon_lg.png" style="width:200px" />
+    <h4>尋找您滿意的髮型歸屬</h4>
+    <h6>© 2016 Myth International. All rights reserved.</h6>
+  </div>
+</div>
+
 <div id="Page_Login">
-  <h2 class="text-center">Myth 時尚羅盤</h2>
+  <h2 class="text-center"><img src="./img/icon.png" style="width:96px" /> 時尚羅盤</h2>
   <div id="Div_Register" class="container collapse in">
     <div class="row">
       <div class="col-xs-10 col-xs-offset-1">

@@ -47,8 +47,11 @@ var app = {
         localStorage.removeItem("Account");
         localStorage.removeItem("Password");
         localStorage.removeItem("FacebookID");
-        $("#Page_Main").hide();
-        $("#Page_Login").show();
+        $("#Cover").fadeIn(function(){
+          $("#Page_Main").hide();
+          $("#Page_Login").show();
+          $("#Cover").fadeOut();
+        });
         break;
       case "onFBConnect":
         FBLoginSubmit('Connect', data.Role + '_profiles', data.Role);
@@ -76,6 +79,8 @@ var app = {
         LoginSubmit('Login', false);
       } else if(localStorage.FacebookID)
         FBLoginSubmit('Login', false, '');
+      else
+        $("#Cover").fadeOut();
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
@@ -119,10 +124,12 @@ function LoginSubmit(Type, Action) {
         document.getElementById('iframe').contentWindow.location.reload(true);
       $("#Page_Login").hide();
       $("#Page_Main").show();
+      $("#Cover").fadeOut();
     } else {
       window.plugins.toast.showShortBottom(data);
       $("#Page_Main").hide();
       $("#Page_Login").show();
+      $("#Cover").fadeOut();
     }
   });
   window.plugins.spinnerDialog.hide();
@@ -145,33 +152,39 @@ function FBLoginSubmit(Type, Action, Role) {
                 document.getElementById('iframe').contentWindow.location.reload(true);
               $("#Page_Login").hide();
               $("#Page_Main").show();
+              $("#Cover").fadeOut();
               return;
             } else {
               window.plugins.toast.showShortBottom(data);
               $("#Page_Main").hide();
               $("#Page_Login").show();
+              $("#Cover").fadeOut();
             }
           });
         }, function(err) {
             window.plugins.toast.showShortBottom("Could not get access token: " + err);
             $("#Page_Main").hide();
             $("#Page_Login").show();
+            $("#Cover").fadeOut();
         });
       }
       else if (response.status === 'not_authorized') {
         window.plugins.toast.showShortBottom('您尚未授權本系統');
         $("#Page_Main").hide();
         $("#Page_Login").show();
+        $("#Cover").fadeOut();
       } else {
         window.plugins.toast.showShortBottom('您尚未登入Facebook');
         $("#Page_Main").hide();
         $("#Page_Login").show();
+        $("#Cover").fadeOut();
       }
     },
     function (error) {
       window.plugins.toast.showShortBottom(error);
       $("#Page_Main").hide();
       $("#Page_Login").show();
+      $("#Cover").fadeOut();
     }
   );
 }
