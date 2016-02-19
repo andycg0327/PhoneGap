@@ -43,6 +43,13 @@ hr {
   top: 0;
   z-index: 9999;
 }
+#Page_Login {
+  color: #FFFFFF;
+}
+.footer {
+  background-color: transparent;
+  color: #FFFFFF;
+}
 #Page_Main {
   height: 100%;
   width: 100%;
@@ -59,14 +66,14 @@ iframe {
 <div id="Cover" class="text-center">
   <div style="position:relative">
     <h2>時尚導航</h2>
-    <img src="./img/icon_lg.png" style="width:200px" />
+    <img src="./img/logo.png" style="width:200px" />
     <h4>尋找您專屬的滿意髮型</h4>
     <h6>© 2016 Myth International. All rights reserved.</h6>
   </div>
 </div>
 
 <div id="Page_Login">
-  <h2 class="text-center"><img src="./img/icon_lg.png" style="width:96px" /> 時尚導航</h2>
+  <h2 class="text-center"><img src="./img/logo.png" style="width:96px" /></h2>
   <div id="Div_Register" class="container collapse in">
     <div class="row">
       <div class="col-xs-10 col-xs-offset-1">
@@ -113,7 +120,7 @@ iframe {
             <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register', false, $('#Role').val())"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
           </div>
         </div>
-        <p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</button></p>
+        <h5 class="text-center"><label onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</label></h5>
         <input type="hidden" name="RegistrationID" value="" />
         <input type="hidden" name="AccessToken" value="" />
         </form>
@@ -150,7 +157,7 @@ iframe {
           </div>
         </div>
         <div id="Alert_Login"></div>
-        <p class="text-center"><button type="button" class="btn btn-link btn-sm" onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</button></p>
+        <h5 class="text-center"><label onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</label></h5>
         <input type="hidden" name="RegistrationID" value="" />
         <input type="hidden" name="AccessToken" value="" />
         </form>
@@ -158,7 +165,7 @@ iframe {
     </div>
   </div>
   <footer class="footer">
-    <h6 class="text-muted">© 2016 Myth International. All rights reserved.</h6>
+    <h6>© 2016 Myth International. All rights reserved.</h6>
   </footer>
 </div>
 
