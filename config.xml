@@ -77,6 +77,7 @@
   <allow-intent href="geo:*"/>
   <platform name="android">
     <allow-intent href="market:*"/>
+    <icon src="icon.png" qualifier=""/>
     <icon src="res/icon/android/icon-36-ldpi.png" qualifier="ldpi"/>
     <icon src="res/icon/android/icon-48-mdpi.png" qualifier="mdpi"/>
     <icon src="res/icon/android/icon-72-hdpi.png" qualifier="hdpi"/>
