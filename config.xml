@@ -1,5 +1,5 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.phonegap.mythhair" version="1.0.0">
-  <name>時尚羅盤</name>
+  <name>時尚導航</name>
   <description>Cloud reservation platform for studios and customers.</description>
   <author href="http://myth-hair.frog.tw/" email="andycg0327@hotmail.com">Myth International</author>
   <content src="index.html"/>
@@ -52,16 +52,8 @@
   <plugin name="phonegap-plugin-barcodescanner-ps" spec="4.1.1"/>
   <plugin name="hu.dpal.phonegap.plugins.spinnerdialog" spec="1.2.0" source="pgb" />
   <icon src="icon.png"/>
-  <icon src="res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
-  <icon src="res/icon/android/icon-48-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
-  <icon src="res/icon/android/icon-72-hdpi.png" gap:platform="android" gap:qualifier="hdpi"/>
-  <icon src="res/icon/android/icon-96-xhdpi.png" gap:platform="android" gap:qualifier="xhdpi"/>
   <icon src="res/icon/blackberry/icon-80.png" gap:platform="blackberry"/>
   <icon src="res/icon/blackberry/icon-80.png" gap:platform="blackberry" gap:state="hover"/>
-  <icon src="res/icon/ios/icon-57.png" gap:platform="ios" width="57" height="57"/>
-  <icon src="res/icon/ios/icon-72.png" gap:platform="ios" width="72" height="72"/>
-  <icon src="res/icon/ios/icon-57-2x.png" gap:platform="ios" width="114" height="114"/>
-  <icon src="res/icon/ios/icon-72-2x.png" gap:platform="ios" width="144" height="144"/>
   <icon src="res/icon/webos/icon-64.png" gap:platform="webos"/>
   <icon src="res/icon/windows-phone/icon-48.png" gap:platform="winphone"/>
   <icon src="res/icon/windows-phone/icon-173-tile.png" gap:platform="winphone" gap:role="background"/>
@@ -85,9 +77,17 @@
   <allow-intent href="geo:*"/>
   <platform name="android">
     <allow-intent href="market:*"/>
+    <icon src="res/icon/android/icon-36-ldpi.png" qualifier="ldpi"/>
+    <icon src="res/icon/android/icon-48-mdpi.png" qualifier="mdpi"/>
+    <icon src="res/icon/android/icon-72-hdpi.png" qualifier="hdpi"/>
+    <icon src="res/icon/android/icon-96-xhdpi.png" qualifier="xhdpi"/>
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*"/>
     <allow-intent href="itms-apps:*"/>
+    <icon src="res/icon/ios/icon-57.png" width="57" height="57"/>
+    <icon src="res/icon/ios/icon-72.png" width="72" height="72"/>
+    <icon src="res/icon/ios/icon-57-2x.png" width="114" height="114"/>
+    <icon src="res/icon/ios/icon-72-2x.png" width="144" height="144"/>
   </platform>
 </widget>
