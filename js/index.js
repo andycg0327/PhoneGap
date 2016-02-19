@@ -66,7 +66,7 @@ var app = {
     }, false);
     
     var push = PushNotification.init({
-      "android": {"senderID": "100971030124", "icon": "icon", "forceShow": "true"},
+      "android": {"senderID": "100971030124", "icon": "notification", "forceShow": "true"},
       "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
       "windows": {}
     });
