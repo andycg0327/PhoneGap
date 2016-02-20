@@ -121,7 +121,7 @@ function LoginSubmit(Type, Action) {
       if(Action)
         document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
       else
-        document.getElementById('iframe').contentWindow.location.reload(true);
+        $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
       $("#Page_Login").hide();
       $("#Page_Main").show();
       $("#Cover").fadeOut();
@@ -149,7 +149,7 @@ function FBLoginSubmit(Type, Action, Role) {
               if(Action)
                 document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
               else
-                document.getElementById('iframe').contentWindow.location.reload(true);
+                $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
               $("#Page_Login").hide();
               $("#Page_Main").show();
               $("#Cover").fadeOut();
