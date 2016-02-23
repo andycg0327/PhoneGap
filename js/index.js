@@ -79,8 +79,10 @@ var app = {
         LoginSubmit('Login', false);
       } else if(localStorage.FacebookID)
         FBLoginSubmit('Login', false, '');
-      else
+      else {
         $("#Cover").fadeOut();
+        navigator.splashscreen.hide();
+      }
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
@@ -125,11 +127,13 @@ function LoginSubmit(Type, Action) {
       $("#Page_Login").hide();
       $("#Page_Main").show();
       $("#Cover").fadeOut();
+      navigator.splashscreen.hide();
     } else {
       window.plugins.toast.showShortBottom(data);
       $("#Page_Main").hide();
       $("#Page_Login").show();
       $("#Cover").fadeOut();
+      navigator.splashscreen.hide();
     }
   });
   window.plugins.spinnerDialog.hide();
@@ -153,12 +157,14 @@ function FBLoginSubmit(Type, Action, Role) {
               $("#Page_Login").hide();
               $("#Page_Main").show();
               $("#Cover").fadeOut();
+              navigator.splashscreen.hide();
               return;
             } else {
               window.plugins.toast.showShortBottom(data);
               $("#Page_Main").hide();
               $("#Page_Login").show();
               $("#Cover").fadeOut();
+              navigator.splashscreen.hide();
             }
           });
         }, function(err) {
@@ -166,6 +172,7 @@ function FBLoginSubmit(Type, Action, Role) {
             $("#Page_Main").hide();
             $("#Page_Login").show();
             $("#Cover").fadeOut();
+            navigator.splashscreen.hide();
         });
       }
       else if (response.status === 'not_authorized') {
@@ -173,11 +180,13 @@ function FBLoginSubmit(Type, Action, Role) {
         $("#Page_Main").hide();
         $("#Page_Login").show();
         $("#Cover").fadeOut();
+        navigator.splashscreen.hide();
       } else {
         window.plugins.toast.showShortBottom('您尚未登入Facebook');
         $("#Page_Main").hide();
         $("#Page_Login").show();
         $("#Cover").fadeOut();
+        navigator.splashscreen.hide();
       }
     },
     function (error) {
@@ -185,6 +194,7 @@ function FBLoginSubmit(Type, Action, Role) {
       $("#Page_Main").hide();
       $("#Page_Login").show();
       $("#Cover").fadeOut();
+      navigator.splashscreen.hide();
     }
   );
 }
