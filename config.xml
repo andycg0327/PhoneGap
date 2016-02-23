@@ -50,8 +50,9 @@
   <plugin name="cordova-plugin-filepath" spec="1.0.0"/>
   <plugin name="cordova-plugin-cache" spec="1.0.5"/>
   <plugin name="phonegap-plugin-barcodescanner-ps" spec="4.1.1"/>
-  <plugin name="hu.dpal.phonegap.plugins.spinnerdialog" spec="1.2.0" source="pgb" />
+  <plugin name="hu.dpal.phonegap.plugins.spinnerdialog" spec="1.2.0" source="pgb"/>
   <icon src="icon.png"/>
+  <splash src="splash.png"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
