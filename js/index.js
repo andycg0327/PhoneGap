@@ -210,6 +210,7 @@ function getPhoto(data) {
     function(imageURI) {
       var actualURL = imageURI;
       alert(actualURL);
+      /*
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
           actualURL = "file://" + localFileUri;
@@ -217,7 +218,7 @@ function getPhoto(data) {
           actualURL = fileEntry.toURL();
           });
         });
-      }
+      }*/
       alert("A");
       var options = new FileUploadOptions();
       options.fileKey = "Upload";
