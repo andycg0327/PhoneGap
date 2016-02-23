@@ -199,6 +199,7 @@ function getPhoto(data) {
   navigator.camera.getPicture(
     function(imageURI) {
       var actualURL = imageURI;
+      alert(actualURL);
       if (imageURI.startsWith("content://")) {
         window.FilePath.resolveNativePath(imageURI, function(localFileUri) {
           actualURL = "file://" + localFileUri;
@@ -207,6 +208,7 @@ function getPhoto(data) {
           });
         });
       }
+      alert("A");
       var options = new FileUploadOptions();
       options.fileKey = "Upload";
       options.fileName = "photo.jpg";
@@ -215,9 +217,11 @@ function getPhoto(data) {
         options.params = {OID: data.OID}
       else
         options.params = {Role: data.Role}
+      alert("B");
 
       window.plugins.spinnerDialog.show(null, null, true);
       var ft = new FileTransfer();
+      alert("C");
       ft.onprogress = function(progressEvent) {
         if (progressEvent.lengthComputable) {
           $("#Modal_Progress").modal({backdrop: "static"});
@@ -226,6 +230,7 @@ function getPhoto(data) {
           //$("#Modal_Progress .progress-bar").css('width', "100%");
         }
       };
+      alert("D");
       ft.upload(actualURL, encodeURI(data.Role == "Activity" ? "http://myth-hair.frog.tw/ajax_DMUpload.php" : "http://myth-hair.frog.tw/ajax_photoUpload.php"), 
         function(r) {
           window.cache.cleartemp();
@@ -239,6 +244,7 @@ function getPhoto(data) {
           $("#Modal_Progress").modal('hide');
         }, options
       );
+      alert("E");
     }, function(message) {
       window.plugins.toast.showShortBottom('已取消上傳');
     }, {
