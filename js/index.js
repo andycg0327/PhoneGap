@@ -29,10 +29,16 @@ var app = {
       case "onBarcodeScan":
         cordova.plugins.barcodeScanner.scan(
           function(result) {
-            if(result.format == "QR_CODE")
+            alert("AA");
+            alert(result.format);
+            alert("BB");
+            if(result.format == "QR_CODE") {
               document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBarcodeScan", Type: data.Type, Result: result.text}), 'http://myth-hair.frog.tw');
+              alert("CC");
+            }
           }, 
           function(error) {
+              alert("DD");
             window.plugins.toast.showShortBottom("Scanning failed: " + error);
           }
         );
@@ -209,8 +215,6 @@ function getPhoto(data) {
   navigator.camera.getPicture(
     function(imageURI) {
       var actualURL = imageURI;
-      alert(actualURL);
-      alert("A");
       var options = new FileUploadOptions();
       options.fileKey = "Upload";
       options.fileName = "photo.jpg";
@@ -219,11 +223,9 @@ function getPhoto(data) {
         options.params = {OID: data.OID}
       else
         options.params = {Role: data.Role}
-      alert("B");
 
       window.plugins.spinnerDialog.show(null, null, true);
-      var ft = new FileTransfer();
-      alert("C");
+      var ft = new FileTransfer
       ft.onprogress = function(progressEvent) {
         if (progressEvent.lengthComputable) {
           $("#Modal_Progress").modal({backdrop: "static"});
@@ -232,7 +234,6 @@ function getPhoto(data) {
           //$("#Modal_Progress .progress-bar").css('width', "100%");
         }
       };
-      alert("D");
       ft.upload(actualURL, encodeURI(data.Role == "Activity" ? "http://myth-hair.frog.tw/ajax_DMUpload.php" : "http://myth-hair.frog.tw/ajax_photoUpload.php"), 
         function(r) {
           window.cache.cleartemp();
@@ -246,7 +247,6 @@ function getPhoto(data) {
           $("#Modal_Progress").modal('hide');
         }, options
       );
-      alert("E");
     }, function(message) {
       window.plugins.toast.showShortBottom('已取消上傳');
     }, {

@@ -19,6 +19,7 @@
   <preference name="android-minSdkVersion" value="15"/>
   <preference name="android-installLocation" value="auto"/>
   <preference name="android-build-tool" value="gradle" />
+  <preference name="SplashScreen" value="screen"/>
   <preference name="AutoHideSplashScreen" value="false"/>
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <gap:plugin name="org.apache.cordova.battery-status"/>
@@ -68,6 +69,7 @@
     <splash src="res/screen/android/screen-mdpi-portrait.png" qualifier="mdpi"/>
     <splash src="res/screen/android/screen-hdpi-portrait.png" qualifier="hdpi"/>
     <splash src="res/screen/android/screen-xhdpi-portrait.png" qualifier="xhdpi"/>
+    <preference name="SplashScreen" value="foo"/>
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*"/>
