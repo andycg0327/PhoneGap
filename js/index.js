@@ -48,11 +48,10 @@ var app = {
         localStorage.removeItem("Account");
         localStorage.removeItem("Password");
         localStorage.removeItem("FacebookID");
-        $("#Cover").fadeIn(function(){
-          $("#Page_Main").hide();
-          $("#Page_Login").show();
-          $("#Cover").fadeOut();
-        });
+        navigator.splashscreen.show();
+        window.setTimeout(function () {
+          ShowLogin();
+        }, 3000);
         break;
       case "onFBConnect":
         FBLoginSubmit('Connect', data.Role + '_profiles', data.Role);
@@ -80,10 +79,8 @@ var app = {
         LoginSubmit('Login', false);
       } else if(localStorage.FacebookID)
         FBLoginSubmit('Login', false, '');
-      else {
-        $("#Cover").fadeOut();
+      else
         navigator.splashscreen.hide();
-      }
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
@@ -94,7 +91,8 @@ app.initialize();
 
 $(document).ready(function(){
   $("#iframe").height(window.innerHeight);
-  $("#Logo").css('max-height', Math.min(window.outerHeight - 400, 400)).width($("#Logo").height());
+  $("#Logo").css('max-height', Math.min(window.innerHeight - 400, 400)).width($("#Logo").height());
+  $("#Page_Login_Body").css('margin-top', (window.innerHeight - $("#Page_Login_Body").height() - $("footer").height()) / 2);
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
       LoginSubmit('Register', false);
@@ -126,16 +124,10 @@ function LoginSubmit(Type, Action) {
         document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
       else
         $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
-      $("#Page_Login").hide();
-      $("#Page_Main").show();
-      $("#Cover").fadeOut();
-      navigator.splashscreen.hide();
+      ShowMain();
     } else {
       window.plugins.toast.showShortBottom(data);
-      $("#Page_Main").hide();
-      $("#Page_Login").show();
-      $("#Cover").fadeOut();
-      navigator.splashscreen.hide();
+      ShowLogin();
     }
   });
   window.plugins.spinnerDialog.hide();
@@ -156,49 +148,41 @@ function FBLoginSubmit(Type, Action, Role) {
                 document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
               else
                 $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
-              $("#Page_Login").hide();
-              $("#Page_Main").show();
-              $("#Cover").fadeOut();
-              navigator.splashscreen.hide();
+              ShowMain();
               return;
             } else {
               window.plugins.toast.showShortBottom(data);
-              $("#Page_Main").hide();
-              $("#Page_Login").show();
-              $("#Cover").fadeOut();
-              navigator.splashscreen.hide();
+              ShowLogin();
             }
           });
         }, function(err) {
             window.plugins.toast.showShortBottom("Could not get access token: " + err);
-            $("#Page_Main").hide();
-            $("#Page_Login").show();
-            $("#Cover").fadeOut();
-            navigator.splashscreen.hide();
+            ShowLogin();
         });
       }
       else if (response.status === 'not_authorized') {
         window.plugins.toast.showShortBottom('您尚未授權本系統');
-        $("#Page_Main").hide();
-        $("#Page_Login").show();
-        $("#Cover").fadeOut();
-        navigator.splashscreen.hide();
+        ShowLogin();
       } else {
         window.plugins.toast.showShortBottom('您尚未登入Facebook');
-        $("#Page_Main").hide();
-        $("#Page_Login").show();
-        $("#Cover").fadeOut();
-        navigator.splashscreen.hide();
+        ShowLogin();
       }
     },
     function (error) {
       window.plugins.toast.showShortBottom(error);
-      $("#Page_Main").hide();
-      $("#Page_Login").show();
-      $("#Cover").fadeOut();
-      navigator.splashscreen.hide();
+      ShowLogin();
     }
   );
+}
+function ShowLogin() {
+  $("#Page_Main").hide();
+  $("#Page_Login").show();
+  navigator.splashscreen.hide();
+}
+function ShowMain() {
+  $("#Page_Login").hide();
+  $("#Page_Main").show();
+  navigator.splashscreen.hide();
 }
 
 function getPhoto(data) {
