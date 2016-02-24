@@ -64,7 +64,6 @@ var app = {
         break;
       }
     }, false);
-    navigator.splashscreen.show();
     
     var push = PushNotification.init({
       "android": {"senderID": "100971030124", "icon": "notification", "forceShow": "true"},
