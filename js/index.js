@@ -49,9 +49,9 @@ var app = {
         localStorage.removeItem("Password");
         localStorage.removeItem("FacebookID");
         navigator.splashscreen.show();
-        window.setTimeout(function () {
+        window.setTimeout(function() {
           ShowLogin();
-        }, 3000);
+        }, 2000);
         break;
       case "onFBConnect":
         FBLoginSubmit('Connect', data.Role + '_profiles', data.Role);
@@ -177,12 +177,16 @@ function FBLoginSubmit(Type, Action, Role) {
 function ShowLogin() {
   $("#Page_Main").hide();
   $("#Page_Login").show();
-  navigator.splashscreen.hide();
+  window.setTimeout(function() {
+    navigator.splashscreen.hide();
+  }, 200);
 }
 function ShowMain() {
   $("#Page_Login").hide();
   $("#Page_Main").show();
-  navigator.splashscreen.hide();
+  window.setTimeout(function() {
+    navigator.splashscreen.hide();
+  }, 200);
 }
 
 function getPhoto(data) {
