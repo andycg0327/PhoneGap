@@ -93,7 +93,7 @@ $(document).ready(function(){
   $("#iframe").height(window.innerHeight);
   $("#Logo").css('max-height', Math.min(window.innerHeight - 400, 400)).width($("#Logo").height());
   $("#Page_Login_Body").css('margin-top', (window.innerHeight - $("#Page_Login_Body").height() - $("footer").height()) / 2);
-  $("#Page_Login").hide();
+  $("#Page_Login").hide().css('opacity', 1);
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
       LoginSubmit('Register', false);
