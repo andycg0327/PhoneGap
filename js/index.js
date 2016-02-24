@@ -29,16 +29,11 @@ var app = {
       case "onBarcodeScan":
         cordova.plugins.barcodeScanner.scan(
           function(result) {
-            alert("AA");
-            alert(result.format);
-            alert("BB");
             if(result.format == "QR_CODE") {
               document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBarcodeScan", Type: data.Type, Result: result.text}), 'http://myth-hair.frog.tw');
-              alert("CC");
             }
           }, 
           function(error) {
-              alert("DD");
             window.plugins.toast.showShortBottom("Scanning failed: " + error);
           }
         );
@@ -98,7 +93,8 @@ var app = {
 app.initialize();
 
 $(document).ready(function(){
-  $("#iframe").height($(window).height());
+  $("#iframe").height(window.outerHeight);
+  $("#Logo").css('max-height', Math.min(window.outerHeight - 400, 400)).width($("#Logo").height());
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
       LoginSubmit('Register', false);

@@ -5,16 +5,16 @@
 <meta charset="utf-8" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="msapplication-tap-highlight" content="no" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1" />
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="./bootstrap-3.3.4/css/bootstrap.min.css" />
+<link rel="stylesheet" href="./bootstrap-3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://myth-hair.frog.tw/css/myth.css">
+<script type="text/javascript" src="cordova.js"></script>
 <script src="./js/jquery.min.js"></script>
 <script src="./bootstrap-3.3.4/js/bootstrap.min.js"></script>
 <script src="./js/bootstrap-validator-0.9.0.min.js"></script>
 <script src="./js/jquery.animate-enhanced.min.js"></script>
-<script type="text/javascript" src="cordova.js"></script>
 <script src="./js/index.js"></script>
 <style>
 body {
@@ -34,7 +34,7 @@ hr {
   background-image: url('./img/cover.jpg');
   background-size: cover;
   color: #FFFFFF;
-  display: flex;
+  display: none; //flex
   align-items: center;
   justify-content: center;
   position: fixed;
@@ -42,6 +42,13 @@ hr {
   height: 100%;
   top: 0;
   z-index: 9999;
+}
+#Page_Login_Body {
+  position: absolute;
+  width: 100%;
+  left: 50%;
+  top: 40%;
+  transform:translate(-50%,-40%);
 }
 #Page_Login label {
   color: #FFFFFF;
@@ -63,7 +70,7 @@ iframe {
 </style>
 
 <body>
-<div id="Cover" class="text-center collapse">
+<div id="Cover" class="text-center">
   <div style="position:relative">
     <h2>時尚導航</h2>
     <img src="./img/logo.png" style="width:200px" />
@@ -73,94 +80,96 @@ iframe {
 </div>
 
 <div id="Page_Login">
-  <h2 class="text-center"><img src="./img/logo.png" style="width:96px" /></h2>
-  <div id="Div_Register" class="container collapse in">
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <form class="form-horizontal" id="Form_Register" data-toggle="validator">
-        <input type="hidden" name="Type" value="Register" />
-        <div class="form-group">
-          <label class="control-label col-lg-2">我想註冊成:</label>
-          <div class="col-lg-10 has-feedback">
-            <i class="fa fa-users fa-fw"></i>
-            <select class="form-control input-sm" name="Role" id="Role">
-            <option value="customer">消費者</option>
-            <option value="hairdresser">設計師</option>
-            </select>
+  <div id="Page_Login_Body">
+    <h2 class="text-center" style="margin-top:0"><img id="Logo" src="./img/logo.png" style="width:40%" /></h2>
+    <div id="Div_Register" class="container collapse in">
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          <form class="form-horizontal" id="Form_Register" data-toggle="validator">
+          <input type="hidden" name="Type" value="Register" />
+          <div class="form-group">
+            <label class="control-label col-lg-2">我想註冊成:</label>
+            <div class="col-lg-10 has-feedback">
+              <i class="fa fa-users fa-fw"></i>
+              <select class="form-control input-sm" name="Role" id="Role">
+              <option value="customer">消費者</option>
+              <option value="hairdresser">設計師</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <hr>
-        <div class="form-group">
-          <div class="col-xs-12 has-feedback">
-            <i class="fa fa-envelope fa-fw"></i>
-            <input type="email" class="form-control input-sm" name="Account" placeholder="Email" required />
+          <hr />
+          <div class="form-group text-center">
+            <div class="col-sm-12 has-feedback">
+              <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register', false, $('#Role').val())"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="col-xs-12 has-feedback">
-            <i class="fa fa-key fa-fw"></i>
-            <input type="password" class="form-control input-sm" name="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
-            <div class="help-block with-errors"></div>
+          <hr>
+          <div class="form-group">
+            <div class="col-xs-12 has-feedback">
+              <i class="fa fa-envelope fa-fw"></i>
+              <input type="email" class="form-control input-sm" name="Account" placeholder="Email" required />
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="col-xs-12 has-feedback">
-            <i class="fa fa-user fa-fw"></i>
-            <input type="text" class="form-control input-sm" name="Name" placeholder="稱呼" required />
+          <div class="form-group">
+            <div class="col-xs-12 has-feedback">
+              <i class="fa fa-key fa-fw"></i>
+              <input type="password" class="form-control input-sm" name="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
+              <div class="help-block with-errors"></div>
+            </div>
           </div>
-        </div>
-        <div class="form-group text-center">
-          <div class="col-sm-12 has-feedback">
-            <button type="submit" class="btn btn-primary btn-block btn-sm" />註冊</button>
+          <div class="form-group">
+            <div class="col-xs-12 has-feedback">
+              <i class="fa fa-user fa-fw"></i>
+              <input type="text" class="form-control input-sm" name="Name" placeholder="稱呼" required />
+            </div>
           </div>
-        </div>
-        <hr />
-        <div class="form-group text-center">
-          <div class="col-sm-12 has-feedback">
-            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Register', false, $('#Role').val())"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 註冊</button>
+          <div class="form-group text-center">
+            <div class="col-sm-12 has-feedback">
+              <button type="submit" class="btn btn-primary btn-block btn-sm" />註冊</button>
+            </div>
           </div>
+          <h5 class="text-center"><label onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</label></h5>
+          <input type="hidden" name="RegistrationID" value="" />
+          <input type="hidden" name="AccessToken" value="" />
+          </form>
         </div>
-        <h5 class="text-center"><label onclick="$('#Div_Register').fadeOut(300, function(){ $('#Div_Login').fadeIn(300); });">已經有帳號? 按此登入</label></h5>
-        <input type="hidden" name="RegistrationID" value="" />
-        <input type="hidden" name="AccessToken" value="" />
-        </form>
       </div>
     </div>
-  </div>
-  <div id="Div_Login" class="container collapse">
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <form class="form-horizontal" id="Form_Login" data-toggle="validator">
-        <input type="hidden" name="Type" value="Login" />
-        <div class="form-group">
-          <div class="col-xs-12 has-feedback">
-            <i class="fa fa-envelope fa-fw"></i>
-            <input type="email" class="form-control input-sm" name="Account" id="Account" placeholder="Email" required />
+    <div id="Div_Login" class="container collapse">
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          <form class="form-horizontal" id="Form_Login" data-toggle="validator">
+          <input type="hidden" name="Type" value="Login" />
+          <div class="form-group text-center">
+            <div class="col-sm-12 has-feedback">
+              <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login', false, $('#Role').val())"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="col-xs-12 has-feedback">
-            <i class="fa fa-key fa-fw"></i>
-            <input type="password" class="form-control input-sm" name="Password" id="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
-            <div class="help-block with-errors"></div>
+          <hr />
+          <div class="form-group">
+            <div class="col-xs-12 has-feedback">
+              <i class="fa fa-envelope fa-fw"></i>
+              <input type="email" class="form-control input-sm" name="Account" id="Account" placeholder="Email" required />
+            </div>
           </div>
-        </div>
-        <div class="form-group text-center">
-          <div class="col-sm-12 has-feedback">
-            <button type="submit" class="btn btn-primary btn-block btn-sm" />登入</button>
+          <div class="form-group">
+            <div class="col-xs-12 has-feedback">
+              <i class="fa fa-key fa-fw"></i>
+              <input type="password" class="form-control input-sm" name="Password" id="Password" placeholder="密碼" pattern="^[a-zA-z0-9]{6,}" data-error="至少 6 個英數字元，區別大小寫。" required />
+              <div class="help-block with-errors"></div>
+            </div>
           </div>
-        </div>
-        <hr />
-        <div class="form-group text-center">
-          <div class="col-sm-12 has-feedback">
-            <button type="button" class="btn btn-primary btn-block btn-sm" onClick="FBLoginSubmit('Login', false, $('#Role').val())"><i class="fa fa-facebook-square fa-fw"></i> 使用 Facebook 登入</button>
+          <div class="form-group text-center">
+            <div class="col-sm-12 has-feedback">
+              <button type="submit" class="btn btn-primary btn-block btn-sm" />登入</button>
+            </div>
           </div>
+          <div id="Alert_Login"></div>
+          <h5 class="text-center"><label onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</label></h5>
+          <input type="hidden" name="RegistrationID" value="" />
+          <input type="hidden" name="AccessToken" value="" />
+          </form>
         </div>
-        <div id="Alert_Login"></div>
-        <h5 class="text-center"><label onclick="$('#Div_Login').fadeOut(300, function(){ $('#Div_Register').fadeIn(300); });">註冊新帳號</label></h5>
-        <input type="hidden" name="RegistrationID" value="" />
-        <input type="hidden" name="AccessToken" value="" />
-        </form>
       </div>
     </div>
   </div>
