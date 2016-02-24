@@ -64,6 +64,7 @@ var app = {
         break;
       }
     }, false);
+    navigator.splashscreen.show();
     
     var push = PushNotification.init({
       "android": {"senderID": "100971030124", "icon": "notification", "forceShow": "true"},
@@ -175,7 +176,6 @@ function FBLoginSubmit(Type, Action, Role) {
   );
 }
 function ShowLogin() {
-  alert("ShowLogin");
   $("#Page_Main").hide();
   $("#Page_Login").show();
   window.setTimeout(function() {
@@ -183,7 +183,6 @@ function ShowLogin() {
   }, 200);
 }
 function ShowMain() {
-  alert("ShowMain");
   $("#Page_Login").hide();
   $("#Page_Main").show();
   window.setTimeout(function() {
