@@ -93,14 +93,7 @@ var app = {
 app.initialize();
 
 $(document).ready(function(){
-  alert(window.innerHeight);
-  alert(window.outerHeight);
-  alert(window.height);
-  alert($(window).innerHeight());
-  alert($(window).outerHeight());
-  alert($(window).height());
-  $("#iframe").height(window.outerHeight);
-  alert($("#iframe").outerHeight());
+  $("#iframe").height(window.innerHeight);
   $("#Logo").css('max-height', Math.min(window.outerHeight - 400, 400)).width($("#Logo").height());
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
