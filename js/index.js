@@ -94,6 +94,7 @@ app.initialize();
 
 $(document).ready(function(){
   $("#iframe").height(window.outerHeight);
+  alert($("#iframe").outerHeight());
   $("#Logo").css('max-height', Math.min(window.outerHeight - 400, 400)).width($("#Logo").height());
   $('#Form_Register').validator().on('submit', function (e) {
     if (!e.isDefaultPrevented())
