@@ -80,7 +80,7 @@ var app = {
       } else if(localStorage.FacebookID)
         FBLoginSubmit('Login', false, '');
       else
-        navigator.splashscreen.hide();
+        ShowLogin();
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
