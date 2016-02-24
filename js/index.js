@@ -93,6 +93,12 @@ var app = {
 app.initialize();
 
 $(document).ready(function(){
+  alert(window.innerHeight);
+  alert(window.outerHeight);
+  alert(window.height);
+  alert($(window).innerHeight());
+  alert($(window).outerHeight());
+  alert($(window).height());
   $("#iframe").height(window.outerHeight);
   alert($("#iframe").outerHeight());
   $("#Logo").css('max-height', Math.min(window.outerHeight - 400, 400)).width($("#Logo").height());
