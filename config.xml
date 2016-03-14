@@ -28,7 +28,7 @@
   <preference name="StatusBarOverlaysWebView" value="false"/>
   <preference name="StatusBarBackgroundColor" value="#14283c"/>
   <gap:plugin name="org.apache.cordova.battery-status"/>
-  <gap:plugin name="org.apache.cordova.camera"/>
+  <gap:plugin name="cordova-plugin-camera"/>
   <gap:plugin name="org.apache.cordova.media-capture"/>
   <gap:plugin name="org.apache.cordova.console"/>
   <gap:plugin name="org.apache.cordova.contacts"/>
@@ -38,7 +38,7 @@
   <gap:plugin name="org.apache.cordova.dialogs"/>
   <gap:plugin name="org.apache.cordova.file"/>
   <gap:plugin name="org.apache.cordova.file-transfer"/>
-  <gap:plugin name="org.apache.cordova.geolocation"/>
+  <gap:plugin name="cordova-plugin-geolocation"/>
   <gap:plugin name="org.apache.cordova.globalization"/>
   <gap:plugin name="org.apache.cordova.inappbrowser"/>
   <gap:plugin name="org.apache.cordova.media"/>
