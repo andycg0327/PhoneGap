@@ -66,6 +66,12 @@
   <allow-intent href="sms:*"/>
   <allow-intent href="mailto:*"/>
   <allow-intent href="geo:*"/>
+  <config-file target="AndroidManifest.xml" parent="/*">
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  </config-file>
   <platform name="android">
     <allow-intent href="market:*"/>
     <icon src="res/icon/android/icon-36-ldpi.png" qualifier="ldpi"/>
