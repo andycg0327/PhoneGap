@@ -66,12 +66,12 @@
   <allow-intent href="sms:*"/>
   <allow-intent href="mailto:*"/>
   <allow-intent href="geo:*"/>
-  <config-file platform="android" parent="/manifest" mode="merge">
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  </config-file>
+  <feature name="http://api.phonegap.com/1.0/camera"/>
+  <feature name="http://api.phonegap.com/1.0/file"/>
+  <feature name="http://api.phonegap.com/1.0/geolocation"/>
+  <feature name="http://api.phonegap.com/1.0/media"/>
+  <feature name="http://api.phonegap.com/1.0/network"/>
+  <feature name="http://api.phonegap.com/1.0/notification"/>
   <platform name="android">
     <allow-intent href="market:*"/>
     <icon src="res/icon/android/icon-36-ldpi.png" qualifier="ldpi"/>
