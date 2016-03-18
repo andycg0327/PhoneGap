@@ -8,6 +8,7 @@
   <preference name="orientation" value="portrait"/>
   <preference name="target-device" value="universal"/>
   <preference name="fullscreen" value="false"/>
+  <preference name="KeyboardShrinksView" value="true"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="prerendered-icon" value="true"/>
