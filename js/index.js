@@ -6,10 +6,6 @@ var app = {
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
   onDeviceReady: function() {
-    cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-    }, function(error){
-      window.plugins.toast.showShortBottom(error);
-    });
     cordova.plugins.diagnostic.requestCameraAuthorization(function(status){
     }, function(error){
       window.plugins.toast.showShortBottom(error);
