@@ -12,6 +12,22 @@ var app = {
       window.plugins.toast.showShortBottom(error);
     });
     
+    navigator.appInfo.getAppInfo(function(appInfo) {
+      alert(appInfo.version);
+      $("footer").fadeIn();
+      if(localStorage.Begin == appInfo.version) {
+        $("#SplashScreen").fadeIn();
+        window.setTimeout(function() {
+          ShowMain();
+        }, 3000);
+      } else {
+        localStorage.Begin = appInfo.version;
+        $("#Div_Carousel").fadeIn();
+      }
+    }, function(err) {
+        alert(err);
+    });
+    
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
       if(e.origin != 'http://myth-hair.frog.tw')
@@ -114,21 +130,6 @@ var app = {
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
-    });
-    
-    navigator.appInfo.getAppInfo(function(appInfo) {
-      $("footer").fadeIn();
-      if(localStorage.Begin == appInfo.version) {
-        $("#SplashScreen").fadeIn();
-        window.setTimeout(function() {
-          ShowMain();
-        }, 3000);
-      } else {
-        localStorage.Begin = appInfo.version;
-        $("#Div_Carousel").fadeIn();
-      }
-    }, function(err) {
-        alert(err);
     });
   }
 };
