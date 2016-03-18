@@ -6,6 +6,14 @@ var app = {
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
   onDeviceReady: function() {
+    cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+    }, function(error){
+      window.plugins.toast.showShortBottom(error);
+    });
+    cordova.plugins.diagnostic.requestCameraAuthorization(function(status){
+    }, function(error){
+      window.plugins.toast.showShortBottom(error);
+    });
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
       if(e.origin != 'http://myth-hair.frog.tw')
