@@ -6,10 +6,37 @@ var app = {
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
   onDeviceReady: function() {
-    cordova.plugins.diagnostic.requestCameraAuthorization(function(status){
+    /*cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
     }, function(error){
       window.plugins.toast.showShortBottom(error);
     });
+    cordova.plugins.diagnostic.requestCameraAuthorization(function(status){
+    }, function(error){
+      window.plugins.toast.showShortBottom(error);
+    });*/
+    cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
+      for (var permission in statuses){
+        switch(statuses[permission]){
+          case cordova.plugins.diagnostic.runtimePermissionStatus.GRANTED:
+            console.log("Permission granted to use "+permission);
+            break;
+          case cordova.plugins.diagnostic.runtimePermissionStatus.NOT_REQUESTED:
+            console.log("Permission to use "+permission+" has not been requested yet");
+            break;
+          case cordova.plugins.diagnostic.runtimePermissionStatus.DENIED:
+            console.log("Permission denied to use "+permission+" - ask again?");
+            break;
+          case cordova.plugins.diagnostic.runtimePermissionStatus.DENIED_ALWAYS:
+            console.log("Permission permanently denied to use "+permission+" - guess we won't be using it then!");
+            break;
+        }
+      }
+    }, function(error){
+      window.plugins.toast.showShortBottom(error);
+    },[
+      cordova.plugins.diagnostic.runtimePermission.CAMERA,
+      cordova.plugins.diagnostic.runtimePermission.LOCATION
+    ]);
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
       if(e.origin != 'http://myth-hair.frog.tw')
