@@ -6,10 +6,12 @@ var app = {
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
   onDeviceReady: function() {
+    // 詢問定位權限
     cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
     }, function(error){
       window.plugins.toast.showShortBottom(error);
     });
+    
     document.addEventListener("backbutton", onBackKeyDown, false);
     window.addEventListener('message', function(e) {
       if(e.origin != 'http://myth-hair.frog.tw')
@@ -31,16 +33,23 @@ var app = {
         window.plugins.toast.showShortBottom(data.Message);
         break;
       case "onBarcodeScan":
-        cordova.plugins.barcodeScanner.scan(
-          function(result) {
-            if(result.format == "QR_CODE") {
-              document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBarcodeScan", Type: data.Type, Result: result.text}), 'http://myth-hair.frog.tw');
+      //詢問相機權限
+        cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
+          cordova.plugins.barcodeScanner.scan(
+            function(result) {
+              if(result.format == "QR_CODE") {
+                document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBarcodeScan", Type: data.Type, Result: result.text}), 'http://myth-hair.frog.tw');
+              }
+            }, 
+            function(error) {
+              window.plugins.toast.showShortBottom("Scanning failed: " + error);
             }
-          }, 
-          function(error) {
-            window.plugins.toast.showShortBottom("Scanning failed: " + error);
-          }
-        );
+          );
+        }, function(error){
+          window.plugins.toast.showShortBottom(error);
+        },[
+          cordova.plugins.diagnostic.runtimePermission.CAMERA
+        ]);
         break;
       case "onReLogin":
         if(localStorage.Account && localStorage.Password)
@@ -64,7 +73,23 @@ var app = {
         window.open('fb://' + data.URL, '_system', 'location=no');
         break;
       case "onNewPicture":
-        getPhoto(data);
+        if(data.SourceType == "CAMERA") {
+          cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
+            getPhoto(data);
+          }, function(error){
+            window.plugins.toast.showShortBottom(error);
+          },[
+            cordova.plugins.diagnostic.runtimePermission.CAMERA
+          ]);
+        } else if(data.SourceType == "PHOTOLIBRARY") {
+          cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
+            getPhoto(data);
+          }, function(error){
+            window.plugins.toast.showShortBottom(error);
+          },[
+            cordova.plugins.diagnostic.runtimePermission.READ_EXTERNAL_STORAGE
+          ]);
+        }
         break;
       }
     }, false);
@@ -76,6 +101,7 @@ var app = {
     });
     push.on('registration', function(data) {
       localStorage.RegistrationID = data.registrationId;
+      /*localStorage.RegistrationID = data.registrationId;
       $("input[name=RegistrationID]").val(data.registrationId);
       if(localStorage.Account && localStorage.Password) {
         $("#Account").val(localStorage.Account);
@@ -84,18 +110,38 @@ var app = {
       } else if(localStorage.FacebookID)
         FBLoginSubmit('Login', false, '');
       else
-        ShowLogin();
+        ShowLogin();*/
     }).on('notification', function(data) {
     }).on('error', function(e) {
       console.log("push error");
+    });
+    
+    navigator.appInfo.getAppInfo(function(appInfo) {
+      $("footer").fadeIn();
+      if(localStorage.Begin == appInfo.version) {
+        $("#SplashScreen").fadeIn();
+        window.setTimeout(function() {
+          ShowMain();
+        }, 3000);
+      } else {
+        localStorage.Begin = appInfo.version;
+        $("#Div_Carousel").fadeIn();
+      }
+    }, function(err) {
+        alert(err);
     });
   }
 };
 app.initialize();
 
 $(document).ready(function(){
+  $("#Carousel").owlCarousel({
+    margin: 0,
+    items: 1,
+  });
   $("#iframe").height(window.innerHeight);
-  $("#Logo").css('max-height', Math.min(window.innerHeight - 400, 400)).width($("#Logo").height());
+  
+  /*$("#Logo").css('max-height', Math.min(window.innerHeight - 400, 400)).width($("#Logo").height());
   $("#Page_Login_Body").css('margin-top', (window.innerHeight - $("#Page_Login_Body").height() - $("footer").height()) / 2);
   $("#Page_Login").hide().css('opacity', 1);
   $('#Form_Register').validator().on('submit', function (e) {
@@ -107,7 +153,7 @@ $(document).ready(function(){
     if (!e.isDefaultPrevented())
       LoginSubmit('Login', false);
     return false;
-  })
+  })*/
 });
 
 var backbutton = false;
@@ -180,17 +226,22 @@ function FBLoginSubmit(Type, Action, Role) {
   );
 }
 function ShowLogin() {
-  $("#Page_Main").hide();
+  ShowMain();
+  /*$("#Page_Main").hide();
   $("#Page_Login").show();
   window.setTimeout(function() {
     navigator.splashscreen.hide();
-  }, 200);
+  }, 200);*/
 }
 function ShowMain() {
+  $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
+  $("#SplashScreen").fadeOut();
+  $("#Div_Carousel").fadeOut();
+  $("footer").fadeOut();
   $("#Page_Login").hide();
   $("#Page_Main").show();
   window.setTimeout(function() {
-    navigator.splashscreen.hide();
+    //navigator.splashscreen.hide();
   }, 200);
 }
 

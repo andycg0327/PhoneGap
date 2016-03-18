@@ -20,12 +20,6 @@
   <preference name="android-minSdkVersion" value="15"/>
   <preference name="android-installLocation" value="auto"/>
   <preference name="android-build-tool" value="gradle" />
-  <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashMaintainAspectRatio" value="true"/>
-  <preference name="AutoHideSplashScreen" value="false"/>
-  <preference name="SplashScreenDelay" value="3000" />
-  <preference name="FadeSplashScreenDuration" value="500"/>
-  <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="StatusBarOverlaysWebView" value="false"/>
   <preference name="StatusBarBackgroundColor" value="#14283c"/>
   <plugin name="org.apache.cordova.battery-status"/>
@@ -45,19 +39,19 @@
   <plugin name="org.apache.cordova.media"/>
   <plugin name="org.apache.cordova.network-information"/>
   <plugin name="org.apache.cordova.vibration"/>
-  <plugin name="cordova-plugin-splashscreen" spec="3.2.0"/>
-  <plugin name="cordova-plugin-whitelist"/>
   <plugin name="cordova.plugins.diagnostic"/>
-  <plugin name="cordova-plugin-facebook4" spec="1.4.0">
+  <plugin name="cordova-plugin-facebook4">
     <param name="APP_ID" value="634530349985696"/>
     <param name="APP_NAME" value="Myth International"/>
   </plugin>
-  <plugin name="phonegap-plugin-push" spec="1.4.2" source="pgb"/>
-  <plugin name="cordova-plugin-x-toast" spec="2.4.0"/>
-  <plugin name="cordova-plugin-statusbar" spec="2.1.1"/>
-  <plugin name="cordova-plugin-filepath" spec="1.0.0"/>
   <plugin name="cordova-plugin-cache" spec="1.0.5"/>
+  <plugin name="cordova-plugin-filepath" spec="1.0.0"/>
+  <plugin name="cordova-plugin-appinfo"/>
+  <plugin name="cordova-plugin-statusbar" spec="2.1.1"/>
+  <plugin name="cordova-plugin-whitelist"/>
+  <plugin name="cordova-plugin-x-toast" spec="2.4.0"/>
   <plugin name="phonegap-plugin-barcodescanner-ps" spec="4.1.1"/>
+  <plugin name="phonegap-plugin-push" spec="1.4.2" source="pgb"/>
   <plugin name="hu.dpal.phonegap.plugins.spinnerdialog" spec="1.2.0" source="pgb"/>
   <icon src="icon.png"/>
   <splash src="splash.png"/>

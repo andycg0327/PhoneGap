@@ -7,6 +7,8 @@
 <meta name="msapplication-tap-highlight" content="no" />
 <meta name="viewport" content="user-scalable=no, initial-scale=1" />
 </head>
+<link rel="stylesheet" href="./css/owl.carousel.min.css">
+<link rel="stylesheet" href="./css/owl.theme.default.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="./bootstrap-3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://myth-hair.frog.tw/css/myth.css">
@@ -15,12 +17,11 @@
 <script src="./bootstrap-3.3.4/js/bootstrap.min.js"></script>
 <script src="./js/bootstrap-validator-0.9.0.min.js"></script>
 <script src="./js/jquery.animate-enhanced.min.js"></script>
+<script src="./js/owl.carousel.min.js"></script>
 <script src="./js/index.js"></script>
 <style>
 body {
-  background-color: #333333;
-  background-image: url('./img/cover.jpg');
-  background-size: cover;
+  background-color: #14283c;
 }
 .form-group {
   border-bottom: none;
@@ -29,19 +30,17 @@ body {
 hr {
   margin: 5px 0 5px 0;
 }
-#Cover {
-  background-color: #333333;
-  background-image: url('./img/cover.jpg');
-  background-size: cover;
+#Div_Carousel,#SplashScreen {
   color: #FFFFFF;
-  display: none; //flex
-  align-items: center;
-  justify-content: center;
+  text-shadow: 0 0 10px #FFFFFF;
   position: fixed;
-  width: 100%;
-  height: 100%;
   top: 0;
-  z-index: 9999;
+  width: 100%;
+  height: calc(100% - 40px);
+  opacity: 0;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
 }
 #Page_Login_Body {
   width: 100%;
@@ -52,6 +51,8 @@ hr {
 .footer {
   background-color: transparent;
   color: #FFFFFF;
+  left: 0;
+  opacity: 0;
 }
 #Page_Login {
   opacity: 0;
@@ -70,14 +71,41 @@ iframe {
 </style>
 
 <body>
-<div id="Cover" class="text-center">
-  <div style="position:relative">
-    <h2>時尚導航</h2>
-    <img src="./img/logo.png" style="width:200px" />
+<div id="SplashScreen">
+  <div class="text-center" style="width:100%">
+    <h1>時尚導航</h1>
+    <img src="./img/logo.png" style="max-width:300px; width:70%; display:inline" />
     <h4>尋找您專屬的滿意髮型</h4>
-    <h6>© 2016 Myth International. All rights reserved.</h6>
   </div>
 </div>
+<div id="Div_Carousel">
+  <div id="Carousel" class="owl-carousel">
+    <div class="text-center">
+      <h1>地圖式搜尋</h1>
+      <img src="./img/intro_1.png" style="max-height:600px; height:90%; width:90%; max-width:600px; display:inline" />
+      <h5>設定服務項目、價位或評價進行優質店家篩選</h5>
+    </div>
+    <div class="text-center">
+      <h1>髮廊瀏覽</h1>
+      <img src="./img/intro_2.png" style="max-height:600px; height:90%; width:90%; max-width:600px; display:inline" />
+      <h5>資訊、設計師、價目與優惠活動一目瞭然<br/>並提供顧客即時線上預約</h5>
+    </div>
+    <div class="text-center">
+      <h1>設計師專屬功能</h1>
+      <img src="./img/intro_3.png" style="max-height:600px; height:90%; width:90%; max-width:600px; display:inline" />
+      <h5>詳盡參數設定、休假表、顧客推播、預約管理<br/>並擁有店家專屬QR Code供員工入店或總店設定</h5>
+    </div>
+    <div class="text-center">
+      <h1>時尚導航</h1>
+      <img src="./img/logo.png" style="max-width:300px; width:70%; display:inline" />
+      <h4>尋找您專屬的滿意髮型</h4>
+      <button type="button" class="btn btn-danger btn-lg" style="margin-top:30px" onclick="ShowMain()">開始使用</button>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <h6>© 2016 Myth International. All rights reserved.</h6>
+</footer>
 
 <div id="Page_Login">
   <div id="Page_Login_Body">
