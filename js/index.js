@@ -186,13 +186,14 @@ function handleOpenURL(url) {
     if(url.search("register") != -1) {
       var params, Account, Password;
       for (params in url.split("?")[1].split("&")) {
-        switch(params.split("=")[0])
+        switch(params.split("=")[0]) {
         case "Account":
           Account = params.split("=")[1];
           break;
         case "Password":
           Password = params.split("=")[1];
           break;
+        }
       }
       LoginSubmit('Login', false, "", Account, Password, "");
     }
