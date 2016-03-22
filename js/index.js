@@ -89,13 +89,13 @@ var app = {
         FBLoginSubmit('Login', false, "");
         break;
       case "onRegister":
-        LoginSubmit('Register', (data.Role == "both" ? "customer" : data.Role) + '_profiles', data.Role, data.Account, data.Password, data.Name);
+        LoginSubmit('Register', false, data.Role, data.Account, data.Password, data.Name);
         break;
       case "onFBRegister":
         if(data.Role == "")
           window.plugins.toast.showShortBottom('請選擇註冊身分');
         else
-          FBLoginSubmit('Register', (data.Role == "both" ? "customer" : data.Role) + '_profiles', data.Role);
+          FBLoginSubmit('Register', false, data.Role);
         break;
       case "onFBConnect":
         FBLoginSubmit('Connect', data.Role + '_profiles', data.Role);
@@ -178,6 +178,11 @@ function onBackKeyDown() {
     (navigator.app && navigator.app.exitApp()) || (device && device.exitApp());
   else
     document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBackKeyDown"}), 'http://myth-hair.frog.tw');
+}
+
+// URL Scheme
+function handleOpenURL(url) {
+  document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: url}), 'http://myth-hair.frog.tw');
 }
 
 function LoginSubmit(Type, Action, Role, Account, Password, Name) {
