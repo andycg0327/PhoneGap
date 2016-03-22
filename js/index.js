@@ -14,6 +14,7 @@ var app = {
     });
     
     navigator.appInfo.getAppInfo(function(appInfo) {
+      window.plugins.toast.showShortBottom(localStorage.Version);
       $("footer").fadeIn();
       if(localStorage.Version == appInfo.version) {
         $("#SplashScreen").fadeIn();
@@ -38,6 +39,7 @@ var app = {
         backbutton = true;
         setTimeout(function(){ backbutton = false; }, 2000);
         window.plugins.toast.showShortBottom('再按一次關閉程式');
+      window.plugins.toast.showShortBottom(localStorage.Version);
         break;
       case "onSpinnerShow":
         window.plugins.spinnerDialog.show(null, null, true);
@@ -220,7 +222,7 @@ function LoginSubmit(Type, Action, Role, Account, Password, Name) {
         localStorage.removeItem("FacebookID");
         window.plugins.toast.showLongBottom("註冊成功，請確認信箱並點選認證網址完成最後註冊步驟。");
       } else
-        window.plugins.toast.showShortBottom("data");
+        window.plugins.toast.showShortBottom(data);
     } else {
       window.plugins.toast.showShortBottom(data);
       //ShowLogin();
@@ -279,13 +281,12 @@ function ShowLogin() {
   }, 200);*/
 }
 function ShowMain() {
+  $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
   localStorage.Version = version;
   if(localStorage.Account && localStorage.Password) {
     LoginSubmit('Login', false, "", localStorage.Account, localStorage.Password, "");
   } else if(localStorage.FacebookID)
     FBLoginSubmit('Login', false, '');
-  else
-    $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
   
   $("#SplashScreen").fadeOut();
   $("#Div_Carousel").fadeOut();
