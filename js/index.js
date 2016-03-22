@@ -15,7 +15,7 @@ var app = {
     
     navigator.appInfo.getAppInfo(function(appInfo) {
       $("footer").fadeIn();
-      if(localStorage.Begin == appInfo.version) {
+      if(localStorage.Version == appInfo.version) {
         $("#SplashScreen").fadeIn();
         window.setTimeout(function() {
           ShowMain();
@@ -132,10 +132,6 @@ var app = {
     });
     push.on('registration', function(data) {
       localStorage.RegistrationID = data.registrationId;
-      if(localStorage.Account && localStorage.Password) {
-        LoginSubmit('Login', false, "", localStorage.Account, localStorage.Password, "");
-      } else if(localStorage.FacebookID)
-        FBLoginSubmit('Login', false, '');
       /*
       $("input[name=RegistrationID]").val(data.registrationId);
       if(localStorage.Account && localStorage.Password) {
@@ -222,8 +218,9 @@ function LoginSubmit(Type, Action, Role, Account, Password, Name) {
         localStorage.Account = Account;
         localStorage.Password = Password;
         localStorage.removeItem("FacebookID");
-        window.plugins.toast.showLongBottom("註冊成功，請確認信箱並點選認證信中的網址完成最後註冊步驟。");
-      }
+        window.plugins.toast.showLongBottom("註冊成功，請確認信箱並點選認證網址完成最後註冊步驟。");
+      } else
+        window.plugins.toast.showShortBottom("data");
     } else {
       window.plugins.toast.showShortBottom(data);
       //ShowLogin();
@@ -282,8 +279,14 @@ function ShowLogin() {
   }, 200);*/
 }
 function ShowMain() {
-  localStorage.Begin = version;
-  $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
+  localStorage.Version = version;
+  if(localStorage.Account && localStorage.Password) {
+    LoginSubmit('Login', false, "", localStorage.Account, localStorage.Password, "");
+  } else if(localStorage.FacebookID)
+    FBLoginSubmit('Login', false, '');
+  else
+    $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
+  
   $("#SplashScreen").fadeOut();
   $("#Div_Carousel").fadeOut();
   $("footer").fadeOut();
