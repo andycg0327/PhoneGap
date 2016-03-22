@@ -132,7 +132,11 @@ var app = {
     });
     push.on('registration', function(data) {
       localStorage.RegistrationID = data.registrationId;
-      /*localStorage.RegistrationID = data.registrationId;
+      if(localStorage.Account && localStorage.Password) {
+        LoginSubmit('Login', false, "", localStorage.Account, localStorage.Password, "");
+      } else if(localStorage.FacebookID)
+        FBLoginSubmit('Login', false, '');
+      /*
       $("input[name=RegistrationID]").val(data.registrationId);
       if(localStorage.Account && localStorage.Password) {
         $("#Account").val(localStorage.Account);
@@ -204,15 +208,22 @@ function handleOpenURL(url) {
 function LoginSubmit(Type, Action, Role, Account, Password, Name) {
   window.plugins.spinnerDialog.show(null, null, true);
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Role: Role, Account: Account, Password: Password, Name: Name, RegistrationID: localStorage.RegistrationID}, function(data, status){
-    if(status == "success" && data == "OK") {
-      localStorage.Account = $("#Account").val();
-      localStorage.Password = $("#Password").val();
-      localStorage.removeItem("FacebookID");
-      if(Action)
-        document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
-      else
-        $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
-      //ShowMain();
+    if(status == "success") {
+      if(data == "Login") {
+        localStorage.Account = $("#Account").val();
+        localStorage.Password = $("#Password").val();
+        localStorage.removeItem("FacebookID");
+        if(Action)
+          document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
+        else
+          $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
+        //ShowMain();
+      } else if(data == "RegisterOK") {
+        localStorage.Account = $("#Account").val();
+        localStorage.Password = $("#Password").val();
+        localStorage.removeItem("FacebookID");
+        window.plugins.toast.showLongBottom("註冊成功，請確認信箱並點選認證信中的網址完成最後註冊步驟。");
+      }
     } else {
       window.plugins.toast.showShortBottom(data);
       //ShowLogin();
