@@ -182,7 +182,22 @@ function onBackKeyDown() {
 
 // URL Scheme
 function handleOpenURL(url) {
-  document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: url}), 'http://myth-hair.frog.tw');
+  if(url.startsWith("mythhair://")) {
+    if(url.search("register") != -1) {
+      var params, Account, Password;
+      for (params in url.split("?")[1].split("&")) {
+        switch(params.split("=")[0])
+        case "Account":
+          Account = params.split("=")[1];
+          break;
+        case "Password":
+          Password = params.split("=")[1];
+          break;
+      }
+      LoginSubmit('Login', false, "", Account, Password, "");
+    }
+    //document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: url}), 'http://myth-hair.frog.tw');
+  }
 }
 
 function LoginSubmit(Type, Action, Role, Account, Password, Name) {
