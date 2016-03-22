@@ -14,17 +14,15 @@ var app = {
     });
     
     navigator.appInfo.getAppInfo(function(appInfo) {
-      window.plugins.toast.showShortBottom(localStorage.Version);
+      version = appInfo.version;
       $("footer").fadeIn();
-      if(localStorage.Version == appInfo.version) {
+      if(localStorage.Version == version) {
         $("#SplashScreen").fadeIn();
         window.setTimeout(function() {
           ShowMain();
         }, 3000);
-      } else {
-        version = appInfo.version;
+      } else
         $("#Div_Carousel").fadeIn();
-      }
     }, function(err) {
         window.plugins.toast.showShortBottom(err);
     });
