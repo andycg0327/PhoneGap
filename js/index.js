@@ -1,3 +1,4 @@
+var version;
 var app = {
   initialize: function() {
     this.bindEvents();
@@ -13,7 +14,6 @@ var app = {
     });
     
     navigator.appInfo.getAppInfo(function(appInfo) {
-      alert(appInfo.version);
       $("footer").fadeIn();
       if(localStorage.Begin == appInfo.version) {
         $("#SplashScreen").fadeIn();
@@ -21,11 +21,11 @@ var app = {
           ShowMain();
         }, 3000);
       } else {
-        localStorage.Begin = appInfo.version;
+        version = appInfo.version;
         $("#Div_Carousel").fadeIn();
       }
     }, function(err) {
-        alert(err);
+        window.plugins.toast.showShortBottom(err);
     });
     
     document.addEventListener("backbutton", onBackKeyDown, false);
@@ -81,6 +81,21 @@ var app = {
         window.setTimeout(function() {
           ShowLogin();
         }, 2000);
+        break;
+      case "onLogin":
+        LoginSubmit('Login', false, "", data.Account, data.Password, "");
+        break;
+      case "onFBLogin":
+        FBLoginSubmit('Login', false, "");
+        break;
+      case "onRegister":
+        LoginSubmit('Register', (data.Role == "both" ? "customer" : data.Role) + '_profiles', data.Role, data.Account, data.Password, data.Name);
+        break;
+      case "onFBRegister":
+        if(data.Role == "")
+          window.plugins.toast.showShortBottom('請選擇註冊身分');
+        else
+          FBLoginSubmit('Register', (data.Role == "both" ? "customer" : data.Role) + '_profiles', data.Role);
         break;
       case "onFBConnect":
         FBLoginSubmit('Connect', data.Role + '_profiles', data.Role);
@@ -165,9 +180,9 @@ function onBackKeyDown() {
     document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBackKeyDown"}), 'http://myth-hair.frog.tw');
 }
 
-function LoginSubmit(Type, Action) {
+function LoginSubmit(Type, Action, Role, Account, Password, Name) {
   window.plugins.spinnerDialog.show(null, null, true);
-  $.post('http://myth-hair.frog.tw/login.php', $("#Form_" + Type).serialize(), function(data, status){
+  $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Role: Role, Account: Account, Password: Password, Name: Name, RegistrationID: localStorage.RegistrationID}, function(data, status){
     if(status == "success" && data == "OK") {
       localStorage.Account = $("#Account").val();
       localStorage.Password = $("#Password").val();
@@ -176,10 +191,10 @@ function LoginSubmit(Type, Action) {
         document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
       else
         $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
-      ShowMain();
+      //ShowMain();
     } else {
       window.plugins.toast.showShortBottom(data);
-      ShowLogin();
+      //ShowLogin();
     }
   });
   window.plugins.spinnerDialog.hide();
@@ -190,7 +205,7 @@ function FBLoginSubmit(Type, Action, Role) {
     function (response) {
       if (response.status === 'connected') {
         facebookConnectPlugin.getAccessToken(function(token) {
-          $("input[name=AccessToken]").val(token);
+          //$("input[name=AccessToken]").val(token);
           $.post('http://myth-hair.frog.tw/loginFB.php', {Type: Type, Role: Role, AccessToken: token, RegistrationID: localStorage.RegistrationID}, function(data, status){
             if(status == "success" && data == "OK") {
               localStorage.FacebookID = response.authResponse.userID;
@@ -200,29 +215,29 @@ function FBLoginSubmit(Type, Action, Role) {
                 document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
               else
                 $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
-              ShowMain();
+              //ShowMain();
               return;
             } else {
               window.plugins.toast.showShortBottom(data);
-              ShowLogin();
+              //ShowLogin();
             }
           });
         }, function(err) {
-            window.plugins.toast.showShortBottom("Could not get access token: " + err);
-            ShowLogin();
+          window.plugins.toast.showShortBottom("Could not get access token: " + err);
+          //ShowLogin();
         });
       }
       else if (response.status === 'not_authorized') {
         window.plugins.toast.showShortBottom('您尚未授權本系統');
-        ShowLogin();
+        //ShowLogin();
       } else {
         window.plugins.toast.showShortBottom('您尚未登入Facebook');
-        ShowLogin();
+        //ShowLogin();
       }
     },
     function (error) {
       window.plugins.toast.showShortBottom(error);
-      ShowLogin();
+      //ShowLogin();
     }
   );
 }
@@ -235,6 +250,7 @@ function ShowLogin() {
   }, 200);*/
 }
 function ShowMain() {
+  localStorage.Begin = version;
   $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
   $("#SplashScreen").fadeOut();
   $("#Div_Carousel").fadeOut();
