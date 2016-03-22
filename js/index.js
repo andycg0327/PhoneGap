@@ -210,8 +210,8 @@ function LoginSubmit(Type, Action, Role, Account, Password, Name) {
   $.post('http://myth-hair.frog.tw/login.php', {Type: Type, Role: Role, Account: Account, Password: Password, Name: Name, RegistrationID: localStorage.RegistrationID}, function(data, status){
     if(status == "success") {
       if(data == "Login") {
-        localStorage.Account = $("#Account").val();
-        localStorage.Password = $("#Password").val();
+        localStorage.Account = Account;
+        localStorage.Password = Password;
         localStorage.removeItem("FacebookID");
         if(Action)
           document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: Action}), 'http://myth-hair.frog.tw');
@@ -219,8 +219,8 @@ function LoginSubmit(Type, Action, Role, Account, Password, Name) {
           $('#iframe').attr('src', "http://myth-hair.frog.tw/phonegap.php");
         //ShowMain();
       } else if(data == "RegisterOK") {
-        localStorage.Account = $("#Account").val();
-        localStorage.Password = $("#Password").val();
+        localStorage.Account = Account;
+        localStorage.Password = Password;
         localStorage.removeItem("FacebookID");
         window.plugins.toast.showLongBottom("註冊成功，請確認信箱並點選認證信中的網址完成最後註冊步驟。");
       }
