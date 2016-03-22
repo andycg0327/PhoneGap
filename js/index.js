@@ -37,7 +37,6 @@ var app = {
         backbutton = true;
         setTimeout(function(){ backbutton = false; }, 2000);
         window.plugins.toast.showShortBottom('再按一次關閉程式');
-      window.plugins.toast.showShortBottom(localStorage.Version);
         break;
       case "onSpinnerShow":
         window.plugins.spinnerDialog.show(null, null, true);
@@ -49,7 +48,7 @@ var app = {
         window.plugins.toast.showShortBottom(data.Message);
         break;
       case "onBarcodeScan":
-      //詢問相機權限
+        //詢問相機權限
         cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
           cordova.plugins.barcodeScanner.scan(
             function(result) {
@@ -69,7 +68,7 @@ var app = {
         break;
       case "onReLogin":
         if(localStorage.Account && localStorage.Password)
-          LoginSubmit('Login', data.Action);
+          LoginSubmit('Login', data.Action, "", localStorage.Account, localStorage.Password, "");
         else if(localStorage.FacebookID)
           FBLoginSubmit('Login', data.Action, '');
         break;
@@ -79,7 +78,7 @@ var app = {
         localStorage.removeItem("FacebookID");
         navigator.splashscreen.show();
         window.setTimeout(function() {
-          ShowLogin();
+          //ShowLogin();
         }, 2000);
         break;
       case "onLogin":
@@ -180,7 +179,7 @@ function onBackKeyDown() {
     document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onBackKeyDown"}), 'http://myth-hair.frog.tw');
 }
 
-// URL Scheme
+/* URL Scheme
 function handleOpenURL(url) {
   if(url.startsWith("mythhair://")) {
     if(url.search("register") != -1) {
@@ -190,8 +189,8 @@ function handleOpenURL(url) {
         case "Account":
           Account = params.split("=")[1];
           break;
-        case "Password":
-          Password = params.split("=")[1];
+        case "Code":
+          Code = params.split("=")[1];
           break;
         }
       }
@@ -199,7 +198,7 @@ function handleOpenURL(url) {
     }
     //document.getElementById('iframe').contentWindow.postMessage(JSON.stringify({Title: "onRedirect", Action: url}), 'http://myth-hair.frog.tw');
   }
-}
+}*/
 
 function LoginSubmit(Type, Action, Role, Account, Password, Name) {
   window.plugins.spinnerDialog.show(null, null, true);
