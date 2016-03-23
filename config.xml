@@ -44,7 +44,6 @@
     <param name="APP_ID" value="634530349985696"/>
     <param name="APP_NAME" value="Myth International"/>
   </plugin>
-  <plugin name="cordova-plugin-cache" spec="1.0.5"/>
   <plugin name="cordova-plugin-filepath" spec="1.0.0"/>
   <plugin name="cordova-plugin-appinfo"/>
   <plugin name="cordova-plugin-statusbar" spec="2.1.1"/>
