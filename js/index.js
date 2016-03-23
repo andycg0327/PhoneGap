@@ -127,7 +127,7 @@ var app = {
     var push = PushNotification.init({
       android: {
         senderID: "100971030124",
-        icon: "logo",
+        icon: "notification_icon",
         forceShow: true,
         clearNotifications: false
       },
@@ -154,6 +154,7 @@ $(document).ready(function(){
     margin: 0,
     items: 1,
   });
+  alert(window.innerHeight);
   $("#iframe").height(window.innerHeight);
 });
 
