@@ -3,7 +3,7 @@
   <description>Cloud reservation platform for studios and customers.</description>
   <author href="http://myth-hair.frog.tw/" email="andycg0327@hotmail.com">Myth International</author>
   <content src="index.html"/>
-  <preference name="phonegap-version" value="cli-6.0.0" />
+  <preference name="phonegap-version" value="cli-5.2.0" />
   <preference name="orientation" value="portrait"/>
   <preference name="target-device" value="universal"/>
   <preference name="fullscreen" value="false"/>
