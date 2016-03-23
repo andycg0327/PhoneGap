@@ -127,7 +127,7 @@ var app = {
     var push = PushNotification.init({
       android: {
         senderID: "100971030124",
-        icon: "notification_icon",
+        icon: "logo",
         forceShow: true,
         clearNotifications: false
       },
